@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | Interview.AI</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="stylesheet" href="/css/legal.css">
+    <!-- Interview.AI design system — loaded last so it owns the visual language -->
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="/" class="logo">
+            <span class="logo-icon">🤖</span>
+            Interview<span>.AI</span>
+        </a>
+        <div class="nav-actions">
+            <a href="/privacy.html" class="nav-link">Privacy</a>
+            <a href="/terms.html" class="nav-link">Terms</a>
+            <a href="/login.html" class="nav-link primary">Login</a>
+        </div>
+    </nav>
+
+    <main class="wrap">
+        <span class="eyebrow"><span class="dot"></span> We actually read these</span>
+        <h1>Contact Us</h1>
+        <p class="subtitle">Bug, feature idea, account problem, or a data-deletion request — send it over and we'll get back to you.</p>
+
+        <div class="contact-grid">
+            <section class="card">
+                <h2 style="margin-top:0;">Get in touch</h2>
+
+                <div class="contact-item">
+                    <div class="contact-icon">📧</div>
+                    <div>
+                        <div class="contact-label">Email</div>
+                        <div class="contact-value">
+                            <a href="mailto:aloysiusjackson39@gmail.com">aloysiusjackson39@gmail.com</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">⏱️</div>
+                    <div>
+                        <div class="contact-label">Response time</div>
+                        <div class="contact-value">Usually within 1–2 business days</div>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">🗑️</div>
+                    <div>
+                        <div class="contact-label">Delete my data</div>
+                        <div class="contact-value">Email us with the address you signed up with and we'll remove your account and practice history.</div>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">🐛</div>
+                    <div>
+                        <div class="contact-label">Reporting a bug</div>
+                        <div class="contact-value">Include what you were doing, what you expected, and what happened instead — a screenshot helps a lot.</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card">
+                <h2 style="margin-top:0;">Send a message</h2>
+                <p style="font-size:14px;">This opens your own mail app with everything filled in — nothing is stored on our side.</p>
+
+                <form id="contact-form" onsubmit="sendContact(event)">
+                    <label for="contact-name">Your name</label>
+                    <input type="text" id="contact-name" placeholder="Jane Doe" required>
+
+                    <label for="contact-email">Your email</label>
+                    <input type="email" id="contact-email" placeholder="you@example.com" required>
+
+                    <label for="contact-subject">Subject</label>
+                    <input type="text" id="contact-subject" placeholder="Bug, feedback, deletion request…" required>
+
+                    <label for="contact-message">Message</label>
+                    <textarea id="contact-message" placeholder="Tell us what's on your mind…" required></textarea>
+
+                    <button type="submit" class="btn">✉️ Open in mail app</button>
+                </form>
+            </section>
+        </div>
+
+        <section class="card">
+            <div class="related">
+                <a href="/privacy.html">Privacy Policy →</a>
+                <a href="/terms.html">Terms of Service →</a>
+                <a href="/">← Back home</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        © 2026 Interview.AI — <a href="/">Home</a> · <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a> · <a href="/contact.html">Contact</a>
+    </footer>
+
+    <script>
+        const SUPPORT_EMAIL = 'aloysiusjackson39@gmail.com';
+
+        function sendContact(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('contact-name').value.trim();
+            const email = document.getElementById('contact-email').value.trim();
+            const subject = document.getElementById('contact-subject').value.trim();
+            const message = document.getElementById('contact-message').value.trim();
+
+            const body = [
+                message,
+                '',
+                '─────────────────',
+                'From: ' + name,
+                'Reply to: ' + email
+            ].join('\n');
+
+            const href = 'mailto:' + SUPPORT_EMAIL +
+                '?subject=' + encodeURIComponent(subject) +
+                '&body=' + encodeURIComponent(body);
+
+            window.location.href = href;
+        }
+    </script>
+
+</body>
+</html>

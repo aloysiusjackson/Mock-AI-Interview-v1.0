@@ -1,0 +1,82 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+.env.*
+!.env.example
+
+# Database artefacts — never commit a database or its write-ahead log
+*.db
+*.db-wal
+*.db-shm
+*.db-journal
+*.sqlite
+*.sqlite3
+interview.db
+mock_interview.db
+
+# Generated session signing key (use SECRET_KEY in the environment instead)
+.flask_secret
+
+# Local verified backups of the SQLite database (rollback source, keep locally)
+backups/
+
+# Uploaded user files (resumes and anything else a user sends us) and any
+# runtime logs. Neither belongs in git: both contain private user data.
+uploads/
+logs/
+
+# Node
+node_modules/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+
+# Editing-session scratch files. They sit inside frontend/, which is the Flask
+# static folder, so without this they would be publicly downloadable in any
+# deployment built from the repository.
+frontend/js/_*.py
+_css_block*.txt
+
+# Logs and test caches
+*.log
+*.log.err
+.pytest_cache/
+
+# ---------------------------------------------------------------------------
+# STALE DUPLICATE ENTRY POINTS - deliberately NOT published
+# ---------------------------------------------------------------------------
+# `index.html` at the repository root is an older standalone copy of the
+# dashboard. It loads frontend/css/styles.css but never loads
+# frontend/css/theme.css (the design system that is loaded LAST and owns the
+# visual language), so opening it directly renders the OLD blue/navy UI.
+#
+# Nothing in the application serves it:
+#   * Flask sends `/` to frontend/landing.html and every other path to
+#     frontend/ (see backend/app.py), and
+#   * vercel.json routes `/(.*)` -> `frontend/$1`.
+# It is kept on disk as a rollback reference only. Publishing it is what made
+# downloaded copies of this project appear to show an old design.
+/index.html
+
+# Packaged exports of this repository and scratch verification output. These
+# are build artefacts OF the project, not project source.
+*.zip
+/verify_extract/
+/.build_verify.py
+
+# Agent / editing-session tooling: the preview launcher plus the one-off patch
+# scripts used while the current UI was built. Not needed to run the app -
+# run.bat (Windows) and start.sh (macOS/Linux) are the supported entry points.
+/.freebuff/
+
+# OS
+.DS_Store
+Thumbs.db

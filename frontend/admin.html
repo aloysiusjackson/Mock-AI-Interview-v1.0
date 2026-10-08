@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | Interview.AI</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="/css/theme.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-brand">
+                <div class="admin-brand-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15.5h-2v-2h2v2zm0-4.5h-2v-5h2v5zm4 4.5h-2v-5h2v5zm0-6.5h-2v-3h2v3z"/></svg>
+                </div>
+                <span class="admin-brand-text">Admin Panel</span>
+            </div>
+
+            <nav class="admin-nav">
+                <a href="#" class="admin-nav-item active" data-section="dashboard">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="admin-nav-item" data-section="users">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+                    <span>Users</span>
+                </a>
+                <a href="#" class="admin-nav-item" data-section="activity">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <span>Activity</span>
+                </a>
+                <a href="#" class="admin-nav-item" data-section="interviews">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M3 20v-8c0-2.2 1.8-4 4-4h10c2.2 0 4 1.8 4 4v8M3 12a9 9 0 0 1 18 0"/></svg>
+                    <span>Interviews</span>
+                </a>
+                <a href="#" class="admin-nav-item" data-section="qa">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    <span>Q&A</span>
+                </a>
+                <a href="#" class="admin-nav-item" data-section="errors">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                    <span>Errors</span>
+                </a>
+                <a href="#" class="admin-nav-item" data-section="system">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M3 20v-8c0-2.2 1.8-4 4-4h10c2.2 0 4 1.8 4 4v8M3 12a9 9 0 0 1 18 0"/></svg>
+                    <span>System Health</span>
+                </a>
+            </nav>
+
+            <div class="admin-sidebar-footer">
+                <div class="admin-user-info">
+                    <div class="admin-avatar" id="admin-avatar">A</div>
+                    <div class="admin-user-details">
+                        <span class="admin-user-name" id="admin-user-name">Admin</span>
+                        <span class="admin-user-role">Administrator</span>
+                    </div>
+                </div>
+                <button class="admin-logout-btn" onclick="admin.logout()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    Logout
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <h1 class="admin-title" id="admin-section-title">Dashboard</h1>
+                <p class="admin-subtitle" id="admin-section-desc">Overview of your platform activity</p>
+            </header>
+
+            <!-- Dashboard Section -->
+            <section class="admin-section active" id="section-dashboard">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon stat-icon-blue">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value" id="stat-total-users">0</span>
+                            <span class="stat-label">Total Users</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon stat-icon-green">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value" id="stat-active-users">0</span>
+                            <span class="stat-label">Active Users</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon stat-icon-orange">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value" id="stat-new-today">0</span>
+                            <span class="stat-label">New Today</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon stat-icon-purple">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M3 20v-8c0-2.2 1.8-4 4-4h10c2.2 0 4 1.8 4 4v8M3 12a9 9 0 0 1 18 0"/></svg>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value" id="stat-total-interviews">0</span>
+                            <span class="stat-label">Total Interviews</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon stat-icon-red">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value" id="stat-failed-logins">0</span>
+                            <span class="stat-label">Failed Logins (24h)</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon stat-icon-teal">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value" id="stat-completed">0</span>
+                            <span class="stat-label">Completed Interviews</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-cards-row">
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <h3>Role Distribution</h3>
+                            <span class="badge">Users by Role</span>
+                        </div>
+                        <div class="admin-card-body">
+                            <canvas id="roleDistributionChart" height="200"></canvas>
+                        </div>
+                    </div>
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <h3>Top Roles by Interviews</h3>
+                            <span class="badge">Most Practiced</span>
+                        </div>
+                        <div class="admin-card-body">
+                            <canvas id="topRolesChart" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h3>Recent Activity</h3>
+                        <a href="#" onclick="admin.switchSection('activity'); return false;" class="view-all-link">View All</a>
+                    </div>
+                    <div class="admin-card-body">
+                        <div class="activity-list" id="recent-activity-list">
+                            <div class="activity-loading">Loading activity...</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Users Section -->
+            <section class="admin-section" id="section-users">
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h3>User Management</h3>
+                        <div class="search-filter-bar">
+                            <div class="search-box">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                                <input type="text" id="user-search" placeholder="Search users...">
+                            </div>
+                            <select id="user-status-filter">
+                                <option value="">All Status</option>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                                <option value="suspended">Suspended</option>
+                            </select>
+                            <select id="user-role-filter">
+                                <option value="all">All Roles</option>
+                                <option value="user">User</option>
+                                <option value="admin">Admin</option>
+                                <option value="suspended">Suspended</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="admin-card-body">
+                        <div class="users-table-wrapper">
+                            <table class="users-table">
+                                <thead>
+                                    <tr>
+                                        <th>User</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Status</th>
+                                        <th>Joined</th>
+                                        <th>Last Login</th>
+                                        <th>Interviews</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="users-table-body">
+                                    <tr><td colspan="8" class="table-loading">Loading users...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="pagination" id="users-pagination">
+                            <!-- Pagination controls -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-card" id="user-detail-card" style="display: none;">
+                    <div class="admin-card-header">
+                        <h3>User Details</h3>
+                        <button class="close-btn" onclick="admin.closeUserDetail()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                        </button>
+                    </div>
+                    <div class="admin-card-body" id="user-detail-body">
+                        <!-- User detail content -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Activity Section -->
+            <section class="admin-section" id="section-activity">
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h3>Activity Log</h3>
+                        <div class="search-filter-bar">
+                            <div class="search-box">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                                <input type="text" id="activity-search" placeholder="Search activity...">
+                            </div>
+                            <select id="activity-type-filter">
+                                <option value="">All Types</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="admin-card-body">
+                        <div class="activity-list" id="activity-list">
+                            <div class="activity-loading">Loading activity...</div>
+                        </div>
+                        <div class="pagination" id="activity-pagination">
+                            <!-- Pagination controls -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        <!-- Interviews Section -->
+            <section class="admin-section" id="section-interviews">
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h3>Interview Records</h3>
+                        <div class="search-filter-bar">
+                            <div class="search-box">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                                <input type="text" id="interview-search" placeholder="Search interviews...">
+                            </div>
+                            <select id="interview-status-filter">
+                                <option value="">All Status</option>
+                                <option value="completed">Completed</option>
+                                <option value="in_progress">In Progress</option>
+                                <option value="high_score">High Score (80+)</option>
+                                <option value="low_score">Needs Improvement</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="admin-card-body">
+                        <div class="interviews-table-wrapper">
+                            <table class="users-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>User</th>
+                                        <th>Role</th>
+                                        <th>Status</th>
+                                        <th>Score</th>
+                                        <th>Answers</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="interviews-table-body">
+                                    <tr><td colspan="8" class="table-loading">Loading interviews...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="pagination" id="interviews-pagination"></div>
+                    </div>
+                </div>
+
+                <div class="admin-card" id="interview-detail-card" style="display: none;">
+                    <div class="admin-card-header">
+                        <h3>Interview Details</h3>
+                        <button class="close-btn" onclick="admin.closeInterviewDetail()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                        </button>
+                    </div>
+                    <div class="admin-card-body" id="interview-detail-body"></div>
+                </div>
+            </section>
+
+            <!-- Questions & Answers Section -->
+            <section class="admin-section" id="section-qa">
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h3>Questions & Answers</h3>
+                        <div class="search-filter-bar">
+                            <div class="search-box">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                                <input type="text" id="qa-search" placeholder="Search Q&A...">
+                            </div>
+                            <select id="qa-category-filter">
+                                <option value="all">All Categories</option>
+                                <option value="Behavioral">Behavioral</option>
+                                <option value="Technical">Technical</option>
+                                <option value="Situational">Situational</option>
+                            </select>
+                            <select id="qa-difficulty-filter">
+                                <option value="all">All Difficulties</option>
+                                <option value="Easy">Easy</option>
+                                <option value="Medium">Medium</option>
+                                <option value="Hard">Hard</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="admin-card-body">
+                        <div class="qa-list" id="qa-list">
+                            <div class="activity-loading">Loading Q&A...</div>
+                        </div>
+                        <div class="pagination" id="qa-pagination"></div>
+                    </div>
+                </div>
+            </section>
+
+        <!-- Errors Section -->
+            <section class="admin-section" id="section-errors">
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h3>Error / Failed Activity Log</h3>
+                        <div class="search-filter-bar">
+                            <div class="search-box">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                                <input type="text" id="error-search" placeholder="Search errors...">
+                            </div>
+                            <select id="error-type-filter">
+                                <option value="">All Error Types</option>
+                            </select>
+                            <span class="error-count-badge" id="error-count-badge">0 errors</span>
+                        </div>
+                    </div>
+                    <div class="admin-card-body">
+                        <div class="errors-list" id="errors-list">
+                            <div class="activity-loading">Loading errors...</div>
+                        </div>
+                        <div class="pagination" id="errors-pagination"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- System Health Section -->
+            <section class="admin-section" id="section-system">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon stat-icon-green">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value" id="sys-uptime">0s</span>
+                            <span class="stat-label">Server Uptime</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon stat-icon-blue">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value" id="sys-success-rate">100%</span>
+                            <span class="stat-label">Success Rate (Today)</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon stat-icon-red" id="sys-errors-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value" id="sys-errors-24h">0</span>
+                            <span class="stat-label">Errors (24h)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-cards-row">
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h3>Danger Zone</h3>
+                        <span class="badge" style="background: rgba(239, 68, 68, 0.1); color: #ef4444;">Warning</span>
+                    </div>
+                    <div class="admin-card-body">
+                        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                            <button class="btn btn-danger" onclick="admin.resetAllUsers()" style="flex: 1;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+                                Reset All User Accounts
+                            </button>
+                            <button class="btn btn-outline" onclick="admin.resetAllData()" style="flex: 1;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+                                Reset All Data
+                            </button>
+                        </div>
+                        <p style="margin-top: 12px; font-size: 0.85rem; color: var(--admin-text-secondary);">
+                            <strong>Reset All Users:</strong> Deletes all user accounts and interviews. Admin account is preserved.
+                        </p>
+                        <p style="font-size: 0.85rem; color: var(--admin-text-secondary);">
+                           <strong>Reset All Data:</strong> Deletes EVERYTHING including admin account. Starts completely fresh.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h3>User Activity</h3>
+                        <span class="badge">Today</span>
+                    </div>
+                        <div class="admin-card-body">
+                            <div class="health-grid" id="health-user-stats">
+                                <div class="health-item">
+                                    <div class="health-value" id="health-new-users-today">0</div>
+                                    <div class="health-label">New Users</div>
+                                </div>
+                                <div class="health-item">
+                                    <div class="health-value" id="health-active-users">0</div>
+                                    <div class="health-label">Active (24h)</div>
+                                </div>
+                                <div class="health-item">
+                                    <div class="health-value" id="health-total-users">0</div>
+                                    <div class="health-label">Total Users</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <h3>Interview Activity</h3>
+                            <span class="badge">Today</span>
+                        </div>
+                        <div class="admin-card-body">
+                            <div class="health-grid">
+                                <div class="health-item">
+                                    <div class="health-value" id="health-interviews-today">0</div>
+                                    <div class="health-label">Interviews Today</div>
+                                </div>
+                                <div class="health-item">
+                                    <div class="health-value" id="health-total-interviews">0</div>
+                                    <div class="health-label">Total Interviews</div>
+                                </div>
+                                <div class="health-item">
+                                    <div class="health-value" id="health-completed">0</div>
+                                    <div class="health-label">Completed</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <h3>Security</h3>
+                            <span class="badge">Today</span>
+                        </div>
+                        <div class="admin-card-body">
+                            <div class="health-grid">
+                                <div class="health-item">
+                                    <div class="health-value" id="health-failed-logins" style="color: #f59e0b;">0</div>
+                                    <div class="health-label">Failed Logins</div>
+                                </div>
+                                <div class="health-item">
+                                    <div class="health-value" id="health-failed-logins-total" style="color: #ef4444;">0</div>
+                                    <div class="health-label">Failed (Total)</div>
+                                </div>
+                                <div class="health-item">
+                                    <div class="health-value" id="health-errors-total" style="color: #ef4444;">0</div>
+                                    <div class="health-label">Errors (Total)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h3>Daily Activity Trend (Last 7 Days)</h3>
+                        <span class="badge">New Users / Interviews / Failed Logins</span>
+                    </div>
+                    <div class="admin-card-body">
+                        <canvas id="dailyTrendChart" height="250"></canvas>
+                    </div>
+                </div>
+
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h3>Recent Errors</h3>
+                        <a href="#" onclick="admin.switchSection('errors'); return false;" class="view-all-link">View All Errors</a>
+                    </div>
+                    <div class="admin-card-body">
+                        <div class="errors-list" id="recent-errors-list">
+                            <div class="activity-loading">Loading...</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+        <footer class="admin-footer">
+            <div class="admin-footer-content">
+                <span class="admin-footer-text">© 2026 Interview.AI Admin Panel</span>
+                <button class="admin-footer-btn" onclick="admin.logout()">Logout</button>
+            </div>
+        </footer>
+    </div>
+
+    <script src="/js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+MockAI Interview Platform
+=========================
+AJ (Aloysius Jackson) — v1.0 delivery package
+Generated: 2026-10-04
+
+WHAT THIS DELIVERY CONTAINS
+---------------------------
+1. Live Interview Room upgraded to a professional, spacious layout
+   (spacing, alignment, sizing, responsive balance) — layout pass only.
+   No colours, typography, animations, glass styling, controls or
+   interview logic changed.
+
+2. Scope of the change (only the Live Interview Room):
+   - frontend/index.html        : question card moved to a full-width
+     conversation band below the two video tiles (kept its classes,
+     ids and all buttons).
+   - frontend/css/styles.css    : appended a "LIVE INTERVIEW ROOM —
+     SPACING & LAYOUT PASS" block (bracing verified) — whitespace,
+     alignment, sizing, responsive balance only.
+   - frontend/css/theme.css     : small spacing tweaks to the proctor
+     status strip + fuller-screen balanced margins for the
+     fullscreen experience.
+
+3. What was deliberately NOT touched:
+   - Login, Register, Dashboard, Landing, Admin pages.
+   - Theme system, colours, fonts, animations, glassmorphism.
+   - All existing buttons/controls (none removed).
+   - Backend / API / database logic.
+
+4. Verification
+   - Live Interview Room measured at: 1440x900, 1920x1080, 1280x720,
+     1366x768, 1024x768, 834x1112, 600x900, 390x844.
+   - Result: generous, even spacing everywhere; no horizontal overflow;
+     controls remain accessible; question area holds 1-3 lines and
+     scrolls gracefully for longer ones.
+   - Dark + light themes verified unchanged (only the requested
+     light-theme contrast fixes from the previous theme task remain).
+   - Backend tests (199 passed, 128 subtests) re-run after the CSS.
+
+FILES DELIVERED WITHIN THIS REPOSITORY
+--------------------------------------
+- frontend/index.html
+- frontend/css/styles.css   (new spacing/layout block appended)
+- frontend/css/theme.css    (proctor strip + fullscreen spacing)
+- backend/tests/            (regression suite, 199 passed)
+
+NOTES
+-----
+- This is a workspace-only delivery (no git history in this checkout).
+  For production, review the three CSS/HTML edits above and re-run the suite
+  from the project root (the suite must be run with -t tests so that
+  tests/support.py is importable; a bare `pytest -q` inside tests/ fails):
+    cd backend
+    python -m unittest discover -s tests -t tests

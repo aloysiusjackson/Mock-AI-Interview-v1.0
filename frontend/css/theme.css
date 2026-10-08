@@ -1,0 +1,2331 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   INTERVIEW.AI — DESIGN SYSTEM  (theme.css)
+   ───────────────────────────────────────────────────────────────────────
+   Restyles every page to the "dark studio glass" look:
+     · #0b0b0f canvas with orange + purple radial glows
+     · glassmorphism panels (blur + hairline white borders)
+     · purple → indigo gradient actions, purple accent text
+   Linked LAST on every page so it wins over the legacy blue palette.
+   Contains no markup changes — pure styling.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+/* ═══════════════════════ 1. TOKENS — DARK (default) ═══════════════════════ */
+:root {
+    /* Canvas */
+    --bg-base: #0b0b0f;
+    --bg-elevated: #111116;
+    --bg-deep: #08080b;
+
+    /* Glass surfaces */
+    --glass-bg: rgba(255, 255, 255, 0.02);
+    --glass-bg-strong: rgba(255, 255, 255, 0.04);
+    --glass-bg-hover: rgba(255, 255, 255, 0.06);
+    --bg-card: rgba(255, 255, 255, 0.03);
+    --bg-surface: rgba(255, 255, 255, 0.04);
+    --bg-surface-solid: #111116;
+    --border-glass: rgba(255, 255, 255, 0.06);
+    --border-strong: rgba(255, 255, 255, 0.12);
+    --border-active: rgba(168, 85, 247, 0.45);
+
+    /* Brand — purple → indigo */
+    --primary: #9333ea;
+    --primary-hover: #a855f7;
+    --primary-light: #a855f7;
+    --primary-deep: #4f46e5;
+    --primary-glow: rgba(147, 51, 234, 0.14);
+    --primary-glow-strong: rgba(147, 51, 234, 0.3);
+    --secondary: #6366f1;
+    --accent-warm: #f97316;
+    --accent-warm-light: rgba(217, 119, 54, 0.12);
+    --accent-gradient: linear-gradient(135deg, #9333ea 0%, #6d28d9 45%, #4f46e5 100%);
+    --accent-gradient-hover: linear-gradient(135deg, #a855f7 0%, #7c3aed 45%, #6366f1 100%);
+    --surface-gradient: linear-gradient(160deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.015) 100%);
+    --btn-gradient: linear-gradient(90deg, #9333ea 0%, #4f46e5 100%);
+    --btn-gradient-hover: linear-gradient(90deg, #a855f7 0%, #6366f1 100%);
+    --btn-shadow: 0 10px 30px rgba(147, 51, 234, 0.28);
+    --btn-shadow-hover: 0 14px 36px rgba(147, 51, 234, 0.4);
+
+    /* Type */
+    --text-primary: #f8fafc;
+    --text-secondary: #e2e8f0;
+    --text-muted: rgba(226, 232, 240, 0.62);
+    --text-dim: #94a3b8;
+    --accent-text: #c084fc;
+    --accent-text-strong: #a855f7;
+
+    /* Status */
+    --success: #34d399;
+    --success-glow: rgba(52, 211, 153, 0.14);
+    --warning: #fbbf24;
+    --danger: #f87171;
+    --danger-glow: rgba(248, 113, 113, 0.14);
+    --info: #60a5fa;
+
+    /* Glow field */
+    --glow-orange: radial-gradient(circle, rgba(217, 119, 54, 0.16) 0%, rgba(11, 11, 15, 0) 70%);
+    --glow-purple: radial-gradient(circle, rgba(107, 56, 251, 0.16) 0%, rgba(11, 11, 15, 0) 70%);
+
+    /* Layout */
+    --sidebar-width: 272px;
+    --border-radius: 20px;
+    --border-radius-sm: 14px;
+    --border-radius-xs: 10px;
+    --radius-lg: 26px;
+    --radius-pill: 999px;
+    --transition-speed: 0.28s;
+    --ease-elastic: cubic-bezier(0.68, -0.6, 0.32, 1.6);
+    --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    /* Shadows */
+    --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.35);
+    --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.45);
+    --shadow-glow: 0 0 34px rgba(147, 51, 234, 0.12);
+
+    /* Radii used by shared controls */
+    --radius: 20px;
+    --radius-sm: 14px;
+    --radius-xs: 10px;
+    --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Aliases the older page-level stylesheets (legal.css, 404.html, login.css)
+       declared for themselves — re-pointed so their rules pick up the new palette. */
+    --cyan: #a855f7;
+    --ice: #e2e8f0;
+    --dark: #0b0b0f;
+    --mid: #4f46e5;
+    --glass: rgba(255, 255, 255, 0.04);
+    --glass-border: rgba(255, 255, 255, 0.06);
+    --olive: #4f46e5;
+    --cream: #e9d5ff;
+    --sage: #a855f7;
+    --brown: #7c3aed;
+    --lavender: #a855f7;
+
+    color-scheme: dark;
+}
+
+/* ═══════════════════════ 2. TOKENS — LIGHT ═══════════════════════ */
+[data-theme="light"],
+html.light {
+    --bg-base: #f6f6fb;
+    --bg-elevated: #ffffff;
+    --bg-deep: #eeeef6;
+
+    --glass-bg: rgba(255, 255, 255, 0.72);
+    --glass-bg-strong: rgba(255, 255, 255, 0.9);
+    --glass-bg-hover: rgba(255, 255, 255, 1);
+    --bg-card: rgba(255, 255, 255, 0.78);
+    --bg-surface: rgba(255, 255, 255, 0.9);
+    --bg-surface-solid: #ffffff;
+    --border-glass: rgba(15, 15, 30, 0.08);
+    --border-strong: rgba(15, 15, 30, 0.14);
+    --border-active: rgba(124, 58, 237, 0.4);
+
+    --primary: #7c3aed;
+    --primary-hover: #6d28d9;
+    --primary-light: #7c3aed;
+    --primary-deep: #4f46e5;
+    --primary-glow: rgba(124, 58, 237, 0.1);
+    --primary-glow-strong: rgba(124, 58, 237, 0.22);
+    --secondary: #6366f1;
+    --accent-warm: #ea580c;
+    --accent-warm-light: rgba(234, 88, 12, 0.1);
+    --accent-gradient: linear-gradient(135deg, #7c3aed 0%, #6d28d9 45%, #4f46e5 100%);
+    --accent-gradient-hover: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 45%, #6366f1 100%);
+    --surface-gradient: linear-gradient(160deg, rgba(255, 255, 255, 0.96) 0%, rgba(244, 244, 252, 0.85) 100%);
+    --btn-shadow: 0 10px 26px rgba(124, 58, 237, 0.24);
+    --btn-shadow-hover: 0 14px 34px rgba(124, 58, 237, 0.34);
+
+    --text-primary: #14141c;
+    --text-secondary: #2c2c3d;
+    --text-muted: rgba(28, 28, 44, 0.72);
+    --text-dim: #6b7280;
+    --accent-text: #7c3aed;
+    --accent-text-strong: #6d28d9;
+
+    --success: #059669;
+    --success-glow: rgba(5, 150, 105, 0.12);
+    --warning: #d97706;
+    --danger: #dc2626;
+    --danger-glow: rgba(220, 38, 38, 0.1);
+    --info: #2563eb;
+
+    --glow-orange: radial-gradient(circle, rgba(234, 88, 12, 0.1) 0%, rgba(246, 246, 251, 0) 70%);
+    --glow-purple: radial-gradient(circle, rgba(124, 58, 237, 0.12) 0%, rgba(246, 246, 251, 0) 70%);
+
+    --shadow-sm: 0 2px 10px rgba(20, 20, 40, 0.07);
+    --shadow-md: 0 8px 26px rgba(20, 20, 40, 0.1);
+    --shadow-lg: 0 20px 46px rgba(20, 20, 40, 0.13);
+    --shadow-glow: 0 0 30px rgba(124, 58, 237, 0.08);
+
+    --cyan: #7c3aed;
+    --ice: #2c2c3d;
+    --dark: #f6f6fb;
+    --mid: #4f46e5;
+    --glass: rgba(255, 255, 255, 0.75);
+    --glass-border: rgba(15, 15, 30, 0.08);
+    --olive: #4f46e5;
+    --cream: #6d28d9;
+    --sage: #7c3aed;
+    --brown: #6d28d9;
+    --lavender: #7c3aed;
+
+    color-scheme: light;
+}
+
+/* ═══════════════════════ 3. BASE CANVAS + GLOWS ═══════════════════════ */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    background: var(--bg-base);
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    background-color: var(--bg-base) !important;
+    background-image: none !important;
+    color: var(--text-secondary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* The two signature radial glows float behind everything, on every page. */
+body::before,
+body::after {
+    content: '';
+    position: fixed;
+    z-index: -1;
+    pointer-events: none;
+    border-radius: 50%;
+    filter: blur(20px);
+}
+
+body::before {
+    width: 780px;
+    height: 780px;
+    top: -260px;
+    right: -180px;
+    background: var(--glow-orange);
+}
+
+body::after {
+    width: 1000px;
+    height: 1000px;
+    bottom: -380px;
+    left: -300px;
+    background: var(--glow-purple);
+}
+
+/* Legacy decorative blobs → reuse for nothing (the body glows carry the look) */
+.bg-gradient-shapes,
+.shape,
+.glow {
+    display: none !important;
+}
+
+::selection {
+    background: rgba(168, 85, 247, 0.35);
+    color: #fff;
+}
+
+/* Purple-accented scrollbars */
+* {
+    scrollbar-color: rgba(147, 51, 234, 0.5) transparent;
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(147, 51, 234, 0.28);
+    border-radius: 999px;
+    border: 3px solid transparent;
+    background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(168, 85, 247, 0.5);
+    background-clip: padding-box;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    letter-spacing: -0.02em;
+}
+
+/* The dashboard view title was a white→blue gradient that vanishes on light
+   backgrounds. Re-point it at the brand gradient instead. */
+.page-title h1,
+[data-theme="light"] .page-title h1,
+[data-theme="dark"] .page-title h1 {
+    background: linear-gradient(90deg, var(--text-primary) 0%, var(--accent-text) 100%) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    color: transparent !important;
+}
+
+[data-theme="light"] body::before,
+[data-theme="light"] body::after {
+    filter: blur(40px);
+    opacity: 0.85;
+}
+
+/* ═══════════════════════ 4. SHARED CONTROLS ═══════════════════════ */
+
+/* — Glass / secondary button (base) — */
+.btn,
+.btn-secondary,
+.demo-btn,
+.login-btn,
+.glass-button {
+    background: var(--glass-bg-strong) !important;
+    border: 1px solid var(--border-strong) !important;
+    color: var(--text-secondary) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: var(--border-radius-sm) !important;
+    transition: all var(--transition);
+}
+
+.btn:hover,
+.btn-secondary:hover,
+.demo-btn:hover,
+.login-btn:hover,
+.glass-button:hover {
+    background: var(--glass-bg-hover) !important;
+    border-color: var(--border-active) !important;
+    color: var(--text-primary) !important;
+    transform: translateY(-2px);
+}
+
+/* — Primary gradient button —
+   Declared *after* the glass base and with a repeated class (.btn.btn-primary)
+   so it outranks both `.btn` and any legacy `.btn:not(...)` rule. */
+.btn-primary,
+.btn.btn-primary,
+button.btn-primary,
+a.btn-primary,
+.login-submit,
+.get-started,
+.btn.primary,
+.nav-link.primary,
+.primary-btn {
+    background: var(--btn-gradient) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #fff !important;
+    box-shadow: var(--btn-shadow) !important;
+    border-radius: var(--border-radius-sm) !important;
+    font-weight: 600;
+    transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+}
+
+.btn-primary:hover,
+.btn.btn-primary:hover,
+.login-submit:hover,
+.get-started:hover,
+.btn.primary:hover,
+.primary-btn:hover {
+    background: var(--btn-gradient-hover) !important;
+    border-color: rgba(255, 255, 255, 0.18) !important;
+    color: #fff !important;
+    box-shadow: var(--btn-shadow-hover) !important;
+    transform: translateY(-2px);
+}
+
+.btn-primary:active,
+.login-submit:active,
+.get-started:active {
+    transform: translateY(0);
+}
+
+/* — Inputs — */
+input, textarea, select,
+.form-input,
+.form-select,
+.login-input,
+.glass-input,
+.transcript-textarea {
+    font-family: inherit;
+}
+
+.form-input,
+.form-select,
+.transcript-textarea,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+textarea,
+select {
+    background: var(--glass-bg-strong) !important;
+    border: 1px solid var(--border-glass) !important;
+    color: var(--text-primary) !important;
+    border-radius: var(--border-radius-sm) !important;
+    transition: all var(--transition);
+}
+
+.form-input:focus,
+.form-select:focus,
+.transcript-textarea:focus,
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="search"]:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    background: var(--glass-bg-hover);
+    border-color: var(--border-active);
+    box-shadow: 0 0 0 4px var(--primary-glow);
+}
+
+::placeholder {
+    color: var(--text-dim);
+    opacity: 0.8;
+}
+
+select option {
+    background: var(--bg-elevated);
+    color: var(--text-primary);
+}
+
+/* — Badges / chips / pills — */
+.badge,
+.trust-chip,
+.call-role-badge,
+.question-category-badge,
+.article-tag,
+.badge-primary {
+    background: rgba(147, 51, 234, 0.12) !important;
+    border: 1px solid rgba(168, 85, 247, 0.28) !important;
+    color: var(--accent-text) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: var(--radius-pill) !important;
+}
+
+.badge-dot {
+    background: var(--accent-text-strong) !important;
+    box-shadow: 0 0 10px rgba(168, 85, 247, 0.7) !important;
+}
+
+/* ═══════════════════════ 5. LANDING PAGE ═══════════════════════ */
+
+.landing {
+    background: transparent !important;
+}
+
+/* Navbar becomes a floating glass pill */
+.navbar {
+    background: var(--glass-bg) !important;
+    border: 1px solid var(--border-glass) !important;
+    border-radius: 22px !important;
+    backdrop-filter: blur(18px) !important;
+    -webkit-backdrop-filter: blur(18px) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+}
+
+.navbar.scrolled {
+    background: rgba(11, 11, 15, 0.72) !important;
+    border-color: var(--border-strong) !important;
+    backdrop-filter: blur(22px) !important;
+    -webkit-backdrop-filter: blur(22px) !important;
+}
+
+.logo {
+    color: var(--text-primary) !important;
+    font-weight: 800;
+}
+
+.logo span {
+    color: var(--accent-text) !important;
+}
+
+.logo-icon {
+    background: var(--accent-gradient) !important;
+    border: 1px solid rgba(168, 85, 247, 0.35) !important;
+    box-shadow: 0 8px 20px rgba(147, 51, 234, 0.35) !important;
+    border-radius: 13px !important;
+}
+
+.nav-links a {
+    color: var(--text-muted) !important;
+    transition: color 0.2s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: var(--text-primary) !important;
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.25);
+}
+
+.nav-links a.active {
+    border-bottom-color: var(--accent-text-strong) !important;
+}
+
+/* Hero */
+.badge {
+    background: var(--glass-bg-strong) !important;
+    border: 1px solid var(--border-strong) !important;
+    color: var(--text-secondary) !important;
+    box-shadow: none !important;
+}
+
+.gradient-text {
+    background: linear-gradient(90deg, #c084fc 0%, #a855f7 45%, #818cf8 100%) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    color: transparent !important;
+}
+
+.description,
+.section-subtitle,
+.step p,
+.faq-answer {
+    color: var(--text-muted) !important;
+}
+
+.demo-btn {
+    background: var(--glass-bg-strong) !important;
+    border: 1px solid var(--border-strong) !important;
+    color: var(--text-secondary) !important;
+}
+
+.demo-btn .play {
+    color: var(--accent-text) !important;
+    border-color: rgba(168, 85, 247, 0.5) !important;
+}
+
+.get-started {
+    border-radius: 14px !important;
+    font-weight: 600;
+}
+
+.get-started .arrow {
+    border-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.login-btn {
+    background: var(--glass-bg-strong) !important;
+    border: 1px solid var(--border-strong) !important;
+    color: var(--text-primary) !important;
+    border-radius: 14px !important;
+}
+
+.login-btn:hover {
+    background: var(--glass-bg-hover) !important;
+    border-color: var(--border-active) !important;
+    box-shadow: 0 0 20px rgba(147, 51, 234, 0.25) !important;
+}
+
+/* Dashboard preview mockup */
+.dashboard-preview {
+    background: var(--glass-bg) !important;
+    border: 1px solid var(--border-glass) !important;
+    border-radius: 28px !important;
+    backdrop-filter: blur(22px) !important;
+    -webkit-backdrop-filter: blur(22px) !important;
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+}
+
+.orb {
+    background: radial-gradient(circle at 35% 30%, rgba(147, 51, 234, 0.3), rgba(79, 70, 229, 0.1) 45%, transparent 70%) !important;
+}
+
+.ai-label {
+    background: var(--glass-bg-strong) !important;
+    border: 1px solid var(--border-glass) !important;
+    color: var(--text-secondary) !important;
+}
+
+.status {
+    color: var(--accent-text) !important;
+}
+
+.status-dot {
+    background: var(--accent-text-strong) !important;
+    box-shadow: 0 0 8px rgba(168, 85, 247, 0.8) !important;
+}
+
+.glass-card {
+    background: var(--glass-bg-strong) !important;
+    border: 1px solid var(--border-strong) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border-radius: 20px !important;
+}
+
+.mic-ring {
+    background: radial-gradient(circle, rgba(147, 51, 234, 0.14), rgba(79, 70, 229, 0.05)) !important;
+    border: 1px solid rgba(168, 85, 247, 0.3) !important;
+    /* Re-point the pulse at a purple keyframe set (the original animated blue). */
+    box-shadow:
+        0 0 25px rgba(147, 51, 234, 0.18),
+        inset 0 0 20px rgba(79, 70, 229, 0.06);
+    animation: themeMicPulse 2s ease-in-out infinite;
+}
+
+@keyframes themeMicPulse {
+    50% {
+        box-shadow:
+            0 0 38px rgba(168, 85, 247, 0.32),
+            inset 0 0 26px rgba(99, 102, 241, 0.1);
+    }
+}
+
+.wave span {
+    background: linear-gradient(to top, #9333ea, #818cf8) !important;
+}
+
+.bar {
+    background: rgba(255, 255, 255, 0.07) !important;
+}
+
+.bar span {
+    background: linear-gradient(90deg, #a855f7, #6366f1) !important;
+}
+
+.feedback-message {
+    background: rgba(147, 51, 234, 0.1) !important;
+    border: 1px solid rgba(168, 85, 247, 0.2) !important;
+    color: var(--text-secondary) !important;
+}
+
+.floating-card {
+    background: rgba(17, 17, 22, 0.82) !important;
+    border: 1px solid var(--border-strong) !important;
+    backdrop-filter: blur(18px) !important;
+    -webkit-backdrop-filter: blur(18px) !important;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5) !important;
+}
+
+[data-theme="light"] .floating-card {
+    background: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Feature strip + step + benefit cards */
+.features {
+    background: var(--glass-bg) !important;
+    border: 1px solid var(--border-glass) !important;
+    backdrop-filter: blur(18px) !important;
+    -webkit-backdrop-filter: blur(18px) !important;
+    border-radius: 22px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+}
+
+.feature {
+    border-right: 1px solid var(--border-glass) !important;
+}
+
+.feature-icon,
+.step-number,
+.testimonial-icon {
+    background: rgba(147, 51, 234, 0.1) !important;
+    border: 1px solid rgba(168, 85, 247, 0.2) !important;
+    border-radius: 13px !important;
+    color: var(--accent-text) !important;
+}
+
+.testimonial-icon {
+    border-radius: 16px !important;
+}
+
+.feature p,
+.scroll,
+.testimonial-card p {
+    color: var(--text-muted) !important;
+}
+
+.step,
+.testimonial-card,
+.faq-item.legacy-card {
+    background: var(--glass-bg) !important;
+    border: 1px solid var(--border-glass) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    border-radius: 22px !important;
+}
+
+.step:hover,
+.testimonial-card:hover {
+    border-color: rgba(168, 85, 247, 0.28) !important;
+    background: var(--glass-bg-strong) !important;
+    box-shadow: 0 20px 45px rgba(147, 51, 234, 0.1) !important;
+}
+
+.step h3,
+.testimonial-card h4,
+.faq-question {
+    color: var(--text-primary) !important;
+}
+
+/* FAQ */
+.faq-item {
+    border-bottom: 1px solid var(--border-glass) !important;
+}
+
+.faq-question:hover,
+.faq-item.active .faq-toggle {
+    color: var(--accent-text) !important;
+}
+
+.faq-toggle {
+    color: var(--text-dim) !important;
+}
+
+.testimonial-card a {
+    color: var(--accent-text) !important;
+}
+
+/* Closing CTA */
+.cta-box {
+    background: linear-gradient(135deg, rgba(147, 51, 234, 0.1), rgba(79, 70, 229, 0.06)) !important;
+    border: 1px solid rgba(168, 85, 247, 0.2) !important;
+    border-radius: 28px !important;
+    backdrop-filter: blur(18px) !important;
+    -webkit-backdrop-filter: blur(18px) !important;
+}
+
+.cta-box p {
+    color: var(--text-muted) !important;
+}
+
+footer,
+footer p {
+    color: var(--text-dim) !important;
+}
+
+footer a {
+    color: var(--text-muted) !important;
+}
+
+footer a:hover {
+    color: var(--accent-text) !important;
+}
+
+/* Mobile nav drawer */
+.mobile-nav {
+    background: rgba(11, 11, 15, 0.96) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+}
+
+[data-theme="light"] .mobile-nav {
+    background: rgba(255, 255, 255, 0.97) !important;
+}
+
+/* ═══════════════════════ 6. DASHBOARD (index.html) ═══════════════════════ */
+
+.app-container {
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+/* — Sidebar — */
+.sidebar,
+[data-theme="light"] .sidebar,
+[data-theme="dark"] .sidebar {
+    background: rgba(11, 11, 15, 0.72) !important;
+    border-right: 1px solid var(--border-glass) !important;
+    backdrop-filter: blur(22px) saturate(1.5) !important;
+    -webkit-backdrop-filter: blur(22px) saturate(1.5) !important;
+    box-shadow: 4px 0 30px rgba(0, 0, 0, 0.45) !important;
+}
+
+[data-theme="light"] .sidebar {
+    background: rgba(255, 255, 255, 0.85) !important;
+    box-shadow: 4px 0 24px rgba(20, 20, 40, 0.08) !important;
+}
+
+.brand-logo,
+.mobile-brand-logo {
+    background: var(--accent-gradient) !important;
+    border: 1px solid rgba(168, 85, 247, 0.4) !important;
+    border-radius: 14px !important;
+    box-shadow: 0 8px 22px rgba(147, 51, 234, 0.35) !important;
+}
+
+.brand-logo svg,
+.mobile-brand-logo svg {
+    fill: #fff !important;
+}
+
+.brand-name,
+.mobile-brand-name {
+    color: var(--text-primary) !important;
+    font-weight: 800;
+}
+
+.nav-link {
+    color: var(--text-muted) !important;
+    border-radius: var(--border-radius-sm) !important;
+    transition: all var(--transition);
+}
+
+.nav-link:hover {
+    color: var(--text-primary) !important;
+    background: var(--glass-bg-strong) !important;
+}
+
+.nav-link.active {
+    background: linear-gradient(90deg, rgba(147, 51, 234, 0.22), rgba(79, 70, 229, 0.1)) !important;
+    color: #fff !important;
+    box-shadow: inset 0 0 0 1px rgba(168, 85, 247, 0.3) !important;
+}
+
+.nav-link.active svg,
+.nav-link.active .nav-icon {
+    color: var(--accent-text) !important;
+    fill: var(--accent-text) !important;
+}
+
+.sidebar-footer {
+    border-top: 1px solid var(--border-glass) !important;
+}
+
+.user-profile-preview {
+    background: var(--glass-bg) !important;
+    border: 1px solid var(--border-glass) !important;
+    border-radius: var(--border-radius-sm) !important;
+}
+
+.avatar,
+.candidate-initial {
+    background: var(--accent-gradient) !important;
+    color: #fff !important;
+    border: 1px solid rgba(168, 85, 247, 0.35) !important;
+}
+
+.sidebar-collapse-btn {
+    background: var(--glass-bg-strong) !important;
+    border: 1px solid var(--border-glass) !important;
+    color: var(--text-muted) !important;
+}
+
+.sidebar-collapse-btn:hover {
+    background: rgba(147, 51, 234, 0.18) !important;
+    border-color: var(--border-active) !important;
+    color: var(--text-primary) !important;
+}
+
+.mobile-menu-btn {
+    color: var(--accent-text) !important;
+}
+
+/* The content column used to paint #0B2545 behind everything. */
+.main-content,
+[data-theme="dark"] .main-content,
+[data-theme="light"] .main-content,
+.content-view,
+.grid-container {
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+/* — Topbar — */
+.topbar {
+    background: rgba(11, 11, 15, 0.6) !important;
+    border-bottom: 1px solid var(--border-glass) !important;
+    backdrop-filter: blur(18px) !important;
+    -webkit-backdrop-filter: blur(18px) !important;
+}
+
+[data-theme="light"] .topbar {
+    background: rgba(255, 255, 255, 0.8) !important;
+}
+
+.page-title {
+    color: var(--text-primary) !important;
+    font-weight: 800;
+}
+
+/* — Cards (the workhorse surface) — */
+.card,
+.metric-card,
+.resource-card,
+.article-card,
+.achievement-card,
+.level-card,
+.tech-tip-box,
+.checklist-item,
+.qa-floating-header,
+.resume-qa-section,
+.article-qa-item,
+.setup-interview-panel,
+.resources-hero,
+.radial-progress-wrapper,
+.assessment-results,
+.assessment-start,
+.score-summary-item {
+    background: var(--glass-bg) !important;
+    border: 1px solid var(--border-glass) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    border-radius: var(--radius-lg) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.28) !important;
+    transition: border-color var(--transition), background var(--transition), transform var(--transition);
+}
+
+.card:hover,
+.metric-card:hover,
+.resource-card:hover,
+.article-card:hover,
+.level-card:hover {
+    border-color: var(--border-strong) !important;
+    background: var(--glass-bg-strong) !important;
+    transform: translateY(-3px);
+}
+
+[data-theme="light"] .card,
+[data-theme="light"] .metric-card,
+[data-theme="light"] .resource-card,
+[data-theme="light"] .article-card,
+[data-theme="light"] .achievement-card,
+[data-theme="light"] .level-card {
+    box-shadow: 0 8px 26px rgba(20, 20, 40, 0.08) !important;
+}
+
+.card-header-flex h2,
+.card h2,
+.card h3,
+.metric-val,
+.metric-label,
+.resource-title,
+.article-card h3,
+.level-name,
+.question-label {
+    color: var(--text-primary) !important;
+}
+
+.metric-label,
+.metric-details p,
+.resource-desc,
+.level-desc,
+.card p {
+    color: var(--text-muted) !important;
+}
+
+/* Tinted metric icon tiles — blue / purple / emerald / orange */
+.metric-icon {
+    border-radius: 16px !important;
+    background: rgba(147, 51, 234, 0.12) !important;
+    border: 1px solid rgba(168, 85, 247, 0.22) !important;
+    color: var(--accent-text) !important;
+    box-shadow: 0 0 18px rgba(147, 51, 234, 0.14) !important;
+}
+
+.resource-icon,
+.level-icon,
+.achievement-icon {
+    border-radius: 16px !important;
+    background: rgba(147, 51, 234, 0.1) !important;
+    border: 1px solid rgba(168, 85, 247, 0.2) !important;
+    color: var(--accent-text) !important;
+}
+
+/* Charts & empty states */
+.chart-empty,
+.empty-banner {
+    background: var(--glass-bg) !important;
+    border: 1px dashed var(--border-strong) !important;
+    border-radius: var(--radius-lg) !important;
+    color: var(--text-muted) !important;
+}
+
+.empty-banner-icon,
+.chart-empty-icon {
+    opacity: 0.85;
+}
+
+.empty-banner-cta {
+    background: var(--btn-gradient) !important;
+    color: #fff !important;
+    border-radius: var(--border-radius-sm) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: var(--btn-shadow) !important;
+}
+
+/* — Secondary dashboard tiles — */
+.activity-item,
+.history-card-item,
+.settings-toggle-item,
+.actionable-tips-box,
+.resume-drop-zone,
+.tracker-item,
+.camera-placeholder,
+.camera-feed-container {
+    background: var(--glass-bg) !important;
+    border: 1px solid var(--border-glass) !important;
+    border-radius: var(--border-radius-sm) !important;
+    color: var(--text-secondary);
+}
+
+.activity-item:hover,
+.history-card-item:hover,
+.resume-drop-zone:hover {
+    background: var(--glass-bg-strong) !important;
+    border-color: var(--border-active) !important;
+}
+
+.tracker-item.active .tracker-number,
+.level-card.active {
+    background: var(--btn-gradient) !important;
+    color: #fff !important;
+}
+
+.candidate-avatar-large,
+.interviewer-avatar-large {
+    background: var(--accent-gradient) !important;
+    color: #fff !important;
+    border: 1px solid rgba(168, 85, 247, 0.35) !important;
+}
+
+/* — Interview room / call UI — */
+.interview-call-container,
+.call-container,
+.call-main-area,
+.call-candidate-panel,
+.call-interviewer-panel,
+.call-question-card,
+.call-transcript-panel,
+.call-control-bar,
+.answers-review-panel,
+.resume-import-modal,
+.resume-modal-content,
+.feedback-modal-content {
+    background: var(--glass-bg) !important;
+    border: 1px solid var(--border-glass) !important;
+    backdrop-filter: blur(18px) !important;
+    -webkit-backdrop-filter: blur(18px) !important;
+    border-radius: var(--radius-lg) !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4) !important;
+}
+
+.call-topbar {
+    background: rgba(11, 11, 15, 0.7) !important;
+    border-bottom: 1px solid var(--border-glass) !important;
+    backdrop-filter: blur(18px) !important;
+    -webkit-backdrop-filter: blur(18px) !important;
+}
+
+.call-video-placeholder {
+    background: linear-gradient(145deg, rgba(147, 51, 234, 0.12), rgba(79, 70, 229, 0.06)) !important;
+    border: 1px solid var(--border-glass) !important;
+}
+
+.call-end-btn {
+    background: linear-gradient(90deg, #e11d48, #be123c) !important;
+    box-shadow: 0 8px 22px rgba(225, 29, 72, 0.35) !important;
+}
+
+.call-record-btn.recording,
+.call-recording-badge,
+.rec-dot {
+    color: #f87171 !important;
+}
+
+.call-next-btn,
+.call-control-btn.primary {
+    background: var(--btn-gradient) !important;
+    color: #fff !important;
+    box-shadow: var(--btn-shadow) !important;
+}
+
+.call-duration-pill,
+.call-role-badge,
+.ai-speaking-indicator,
+.call-recording-badge {
+    background: var(--glass-bg-strong) !important;
+    border: 1px solid var(--border-glass) !important;
+    color: var(--text-secondary) !important;
+}
+
+.call-role-badge {
+    background: rgba(147, 51, 234, 0.12) !important;
+    border-color: rgba(168, 85, 247, 0.28) !important;
+    color: var(--accent-text) !important;
+}
+
+.ai-wave-bar {
+    background: linear-gradient(to top, #9333ea, #818cf8) !important;
+}
+
+.signal-bar,
+.wave-dot {
+    background: var(--accent-text-strong) !important;
+}
+
+/* — Modals / popups — */
+.feedback-modal-overlay,
+.welcome-popup-overlay,
+.mobile-nav-overlay,
+.anti-cheat-overlay {
+    background: rgba(8, 8, 11, 0.72) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+}
+
+.welcome-popup-card,
+.feedback-modal-content,
+.resume-modal-content {
+    background: rgba(17, 17, 22, 0.96) !important;
+    border: 1px solid var(--border-strong) !important;
+    border-radius: var(--radius-lg) !important;
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6) !important;
+}
+
+[data-theme="light"] .welcome-popup-card,
+[data-theme="light"] .feedback-modal-content,
+[data-theme="light"] .resume-modal-content {
+    background: rgba(255, 255, 255, 0.98) !important;
+}
+
+.welcome-title,
+.feedback-modal-title {
+    color: var(--text-primary) !important;
+}
+
+.welcome-subtitle,
+.feedback-modal-subtitle {
+    color: var(--text-muted) !important;
+}
+
+.feedback-stars .star,
+.star.active {
+    color: #fbbf24 !important;
+}
+
+/* — Loaders — */
+.pulse-spinner .double-bounce1,
+.pulse-spinner .double-bounce2 {
+    background: var(--accent-text-strong) !important;
+}
+
+.loader-view {
+    background: rgba(11, 11, 15, 0.9) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+}
+
+[data-theme="light"] .loader-view {
+    background: rgba(255, 255, 255, 0.92) !important;
+}
+
+/* — Floating controls — */
+.floating-theme-btn {
+    background: var(--glass-bg-strong) !important;
+    border: 1px solid var(--border-strong) !important;
+    color: var(--text-primary) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+}
+
+.floating-theme-btn:hover {
+    background: rgba(147, 51, 234, 0.2) !important;
+    border-color: var(--border-active) !important;
+}
+
+/* — Mobile account button —
+   The hamburger is gone: on mobile the top-right control is a user icon that
+   opens the account menu (navigation + profile + auth). */
+.floating-nav-btn {
+    width: 46px;
+    height: 46px;
+    border-radius: 50% !important;
+    background: var(--accent-gradient) !important;
+    border: 1px solid rgba(168, 85, 247, 0.45) !important;
+    color: #fff !important;
+    box-shadow: 0 8px 22px rgba(147, 51, 234, 0.4) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+.floating-nav-btn:hover {
+    background: var(--accent-gradient-hover) !important;
+    border-color: rgba(192, 132, 252, 0.6) !important;
+    box-shadow: var(--btn-shadow-hover) !important;
+    transform: translateY(-2px) scale(1.05);
+}
+
+.floating-nav-btn:active {
+    transform: scale(0.95);
+}
+
+.floating-nav-btn svg {
+    width: 22px;
+    height: 22px;
+    fill: currentColor;
+}
+
+.floating-nav-btn .nav-user-initial {
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    line-height: 1;
+}
+
+/* Only one of the glyph / initial is ever shown. */
+.floating-nav-btn svg[hidden],
+.floating-nav-btn .nav-user-initial[hidden] {
+    display: none !important;
+}
+
+/* — Toggles — */
+.toggle-switch input:checked + .toggle-slider,
+.toggle-slider.on {
+    background: var(--btn-gradient) !important;
+}
+
+.toggle-slider {
+    background: rgba(255, 255, 255, 0.12) !important;
+}
+
+/* — Progress bars — */
+.radial-fill {
+    stroke: url(#radialGradient) var(--accent-text-strong);
+}
+
+.progress-bar,
+.chart-bar {
+    background: var(--btn-gradient) !important;
+}
+
+/* — Mobile nav drawer — */
+.mobile-nav-panel {
+    background: rgba(11, 11, 15, 0.97) !important;
+    border-left: 1px solid var(--border-glass) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+}
+
+[data-theme="light"] .mobile-nav-panel {
+    background: rgba(255, 255, 255, 0.98) !important;
+}
+
+/* ═══════════════════════ 7. LOGIN / AUTH ═══════════════════════ */
+
+body:has(.login-wrapper),
+body:has(.auth-panel) {
+    background-color: var(--bg-base) !important;
+}
+
+.login-wrapper,
+[data-theme="dark"] .login-wrapper,
+[data-theme="light"] .login-wrapper {
+    background: var(--glass-bg) !important;
+    border: 1px solid var(--border-glass) !important;
+    border-radius: 30px !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5) !important;
+    overflow: hidden;
+}
+
+[data-theme="light"] .login-wrapper {
+    box-shadow: 0 24px 60px rgba(20, 20, 40, 0.12) !important;
+}
+
+/* Left branding half — purple wash */
+.login-left,
+[data-theme="dark"] .login-left,
+[data-theme="light"] .login-left {
+    background: linear-gradient(135deg, rgba(147, 51, 234, 0.14) 0%, rgba(11, 11, 15, 0) 100%) !important;
+    border-right: 1px solid var(--border-glass) !important;
+}
+
+.login-left::before,
+.login-left::after {
+    background: var(--glow-purple) !important;
+}
+
+.login-brand-icon,
+[data-theme="light"] .login-brand-icon,
+[data-theme="dark"] .login-brand-icon {
+    background: var(--accent-gradient) !important;
+    border: 1px solid rgba(168, 85, 247, 0.4) !important;
+    box-shadow: 0 8px 22px rgba(147, 51, 234, 0.35) !important;
+}
+
+.login-brand-text,
+[data-theme="light"] .login-brand-text,
+[data-theme="dark"] .login-brand-text {
+    color: var(--text-primary) !important;
+}
+
+.login-hero h1,
+[data-theme="dark"] .login-hero h1,
+[data-theme="light"] .login-hero h1 {
+    color: var(--text-primary) !important;
+}
+
+.login-hero h1 span,
+[data-theme="dark"] .login-hero h1 span,
+[data-theme="light"] .login-hero h1 span {
+    background: linear-gradient(90deg, var(--accent-text) 0%, var(--primary-deep) 100%) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    color: transparent !important;
+}
+
+.login-hero p,
+[data-theme="dark"] .login-hero p,
+[data-theme="light"] .login-hero p {
+    color: var(--text-muted) !important;
+}
+
+.login-welcome-badge,
+[data-theme="dark"] .login-welcome-badge,
+[data-theme="light"] .login-welcome-badge {
+    background: var(--glass-bg-strong) !important;
+    border: 1px solid var(--border-glass) !important;
+    color: var(--text-muted) !important;
+}
+
+.login-welcome-badge strong {
+    color: var(--accent-text) !important;
+}
+
+.illustration-container,
+.illustration-container::before {
+    background: var(--glass-bg-strong) !important;
+    border: 1px solid var(--border-glass) !important;
+}
+
+.illustration-sphere {
+    background: linear-gradient(135deg, #a855f7, #4f46e5) !important;
+    box-shadow: 0 0 60px rgba(147, 51, 234, 0.5) !important;
+}
+
+.wave-line {
+    background: rgba(168, 85, 247, 0.35) !important;
+}
+
+.login-right,
+[data-theme="dark"] .login-right,
+[data-theme="light"] .login-right {
+    background: transparent !important;
+}
+
+.login-form-title,
+[data-theme="dark"] .login-form-title,
+[data-theme="light"] .login-form-title {
+    color: var(--text-primary) !important;
+}
+
+.login-form-subtitle,
+[data-theme="dark"] .login-form-subtitle {
+    color: var(--text-muted) !important;
+}
+
+.input-group label,
+[data-theme="dark"] .input-group label {
+    color: var(--text-dim) !important;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.input-wrapper {
+    background: var(--glass-bg-strong) !important;
+    border: 1px solid var(--border-glass) !important;
+    border-radius: var(--border-radius-sm) !important;
+    transition: all var(--transition);
+}
+
+.input-wrapper:focus-within {
+    background: var(--glass-bg-hover) !important;
+    border-color: var(--border-active) !important;
+    box-shadow: 0 0 0 4px var(--primary-glow) !important;
+}
+
+.input-wrapper .login-input,
+[data-theme="dark"] .input-wrapper .login-input,
+[data-theme="light"] .input-wrapper .login-input {
+    background: transparent !important;
+    border: none !important;
+    color: var(--text-primary) !important;
+    box-shadow: none !important;
+}
+
+.login-input::placeholder {
+    color: var(--text-dim) !important;
+}
+
+.input-icon,
+[data-theme="dark"] .input-icon {
+    color: var(--text-dim) !important;
+}
+
+.input-icon svg {
+    stroke: currentColor !important;
+    fill: none !important;
+}
+
+.forgot-link a,
+[data-theme="dark"] .forgot-link a,
+.check-text a,
+[data-theme="dark"] .check-text a,
+.signup-link a,
+[data-theme="dark"] .signup-link a {
+    color: var(--accent-text) !important;
+}
+
+.forgot-link a:hover,
+.check-text a:hover,
+.signup-link a:hover {
+    color: var(--accent-text-strong) !important;
+}
+
+.login-submit,
+[data-theme="dark"] .login-submit,
+[data-theme="light"] .login-submit {
+    background: var(--btn-gradient) !important;
+    color: #fff !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: var(--btn-shadow) !important;
+    border-radius: var(--border-radius-sm) !important;
+    font-weight: 600;
+}
+
+.login-submit:hover,
+[data-theme="dark"] .login-submit:hover {
+    background: var(--btn-gradient-hover) !important;
+    box-shadow: var(--btn-shadow-hover) !important;
+}
+
+.login-divider::after,
+[data-theme="dark"] .login-divider::after {
+    background: var(--border-glass) !important;
+}
+
+.login-divider span,
+[data-theme="dark"] .login-divider span {
+    background: var(--bg-elevated) !important;
+    color: var(--text-dim) !important;
+    border: 1px solid var(--border-glass) !important;
+}
+
+.social-btn,
+[data-theme="dark"] .social-btn {
+    background: var(--glass-bg-strong) !important;
+    border: 1px solid var(--border-glass) !important;
+    color: var(--text-primary) !important;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.social-btn:hover,
+[data-theme="dark"] .social-btn:hover {
+    background: var(--glass-bg-hover) !important;
+    border-color: var(--border-active) !important;
+    transform: translateY(-3px);
+}
+
+.checkmark,
+[data-theme="dark"] .checkmark {
+    background: var(--glass-bg-strong) !important;
+    border: 1px solid var(--border-strong) !important;
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkmark {
+    background: var(--btn-gradient) !important;
+    border-color: transparent !important;
+}
+
+.signup-link,
+[data-theme="dark"] .signup-link {
+    color: var(--text-muted) !important;
+}
+
+.login-theme-btn,
+[data-theme="dark"] .login-theme-btn {
+    background: var(--glass-bg-strong) !important;
+    border: 1px solid var(--border-glass) !important;
+    color: var(--text-muted) !important;
+}
+
+.login-theme-btn:hover {
+    color: var(--text-primary) !important;
+    border-color: var(--border-active) !important;
+}
+
+.verify-check {
+    background: rgba(147, 51, 234, 0.14) !important;
+    border: 1px solid rgba(168, 85, 247, 0.3) !important;
+    color: var(--accent-text) !important;
+}
+
+.verify-panel h2 {
+    color: var(--text-primary) !important;
+}
+
+.verify-panel p {
+    color: var(--text-muted) !important;
+}
+
+.verify-panel p strong,
+[data-theme="dark"] .verify-panel p strong {
+    color: var(--accent-text) !important;
+}
+
+.verify-fallback {
+    background: var(--glass-bg-strong) !important;
+    border: 1px solid var(--border-glass) !important;
+}
+
+.verify-fallback a,
+.verify-fallback button {
+    color: var(--accent-text) !important;
+}
+
+.back-link a,
+[data-theme="dark"] .back-link a {
+    color: var(--text-dim) !important;
+}
+
+.back-link a:hover {
+    color: var(--text-primary) !important;
+}
+
+.toast {
+    background: rgba(17, 17, 22, 0.96) !important;
+    border: 1px solid var(--border-strong) !important;
+    color: var(--text-primary) !important;
+    border-radius: var(--border-radius-sm) !important;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5) !important;
+}
+
+.toast.success {
+    border-color: rgba(52, 211, 153, 0.4) !important;
+}
+
+.toast.error {
+    border-color: rgba(248, 113, 113, 0.4) !important;
+}
+
+/* ═══════════════════════ 8. LEGAL / CONTACT / 404 / RESET ═══════════════════════ */
+
+body:has(.wrap) {
+    background-color: var(--bg-base) !important;
+    background-image: none !important;
+}
+
+.wrap {
+    color: var(--text-secondary);
+}
+
+.navbar {
+    background: var(--glass-bg) !important;
+    border-color: var(--border-glass) !important;
+}
+
+.logo,
+.logo span {
+    color: var(--text-primary) !important;
+}
+
+.logo span {
+    color: var(--accent-text) !important;
+}
+
+.nav-link {
+    color: var(--text-muted) !important;
+    border: 1px solid var(--border-glass) !important;
+    background: var(--glass-bg-strong) !important;
+    border-radius: var(--radius-pill) !important;
+}
+
+.nav-link:hover {
+    color: var(--text-primary) !important;
+    border-color: var(--border-active) !important;
+}
+
+.nav-link.primary {
+    background: var(--btn-gradient) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    color: #fff !important;
+    box-shadow: var(--btn-shadow) !important;
+}
+
+.eyebrow {
+    background: rgba(147, 51, 234, 0.12) !important;
+    border: 1px solid rgba(168, 85, 247, 0.28) !important;
+    color: var(--accent-text) !important;
+}
+
+.dot {
+    background: var(--accent-text-strong) !important;
+    box-shadow: 0 0 10px rgba(168, 85, 247, 0.7) !important;
+}
+
+.wrap h1,
+.card h2,
+.card h3 {
+    color: var(--text-primary) !important;
+}
+
+.subtitle,
+.card p,
+.wrap p,
+li {
+    color: var(--text-muted) !important;
+}
+
+
+
+.card {
+    background: var(--glass-bg) !important;
+    border: 1px solid var(--border-glass) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    border-radius: var(--radius-lg) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+}
+
+.updated {
+    color: var(--text-dim) !important;
+}
+
+a.inline,
+.card a {
+    color: var(--accent-text) !important;
+}
+
+code {
+    background: rgba(147, 51, 234, 0.12) !important;
+    color: var(--accent-text) !important;
+    border: 1px solid rgba(168, 85, 247, 0.2) !important;
+    border-radius: 6px;
+    padding: 1px 6px;
+}
+
+.callout {
+    background: rgba(147, 51, 234, 0.08) !important;
+    border-left: 3px solid var(--accent-text-strong) !important;
+    border-radius: var(--border-radius-sm) !important;
+}
+
+.contact-item {
+    border-bottom: 1px solid var(--border-glass) !important;
+}
+
+.contact-icon {
+    background: rgba(147, 51, 234, 0.12) !important;
+    border: 1px solid rgba(168, 85, 247, 0.24) !important;
+    color: var(--accent-text) !important;
+    border-radius: 14px !important;
+}
+
+.contact-label {
+    color: var(--text-dim) !important;
+}
+
+.contact-value a {
+    color: var(--accent-text) !important;
+}
+
+input[type="text"],
+input[type="email"],
+textarea {
+    background: var(--glass-bg-strong) !important;
+    border: 1px solid var(--border-glass) !important;
+    color: var(--text-primary) !important;
+    border-radius: var(--border-radius-sm) !important;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+textarea:focus {
+    border-color: var(--border-active) !important;
+    box-shadow: 0 0 0 4px var(--primary-glow) !important;
+}
+
+/* Legal-page buttons are the primary action, so make the bare `.btn` purple
+   — scoped so it can't leak into the dashboard's glass buttons. */
+body:has(.wrap) .btn,
+body:has(.panel) .btn {
+    background: var(--btn-gradient) !important;
+    color: #fff !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: var(--btn-shadow) !important;
+    border-radius: var(--border-radius-sm) !important;
+}
+
+body:has(.wrap) .btn:hover,
+body:has(.panel) .btn:hover {
+    background: var(--btn-gradient-hover) !important;
+    box-shadow: var(--btn-shadow-hover) !important;
+}
+
+.related a {
+    color: var(--accent-text) !important;
+    background: var(--glass-bg-strong) !important;
+    border: 1px solid var(--border-glass) !important;
+    border-radius: var(--radius-pill) !important;
+}
+
+.related a:hover {
+    border-color: var(--border-active) !important;
+    background: var(--glass-bg-hover) !important;
+}
+
+/* 404 page */
+.url {
+    background: var(--glass-bg-strong) !important;
+    border: 1px solid var(--border-glass) !important;
+    color: var(--accent-text) !important;
+    border-radius: var(--radius-pill) !important;
+}
+
+.code {
+    background: linear-gradient(90deg, #c084fc, #818cf8) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    color: transparent !important;
+}
+
+.panel {
+    background: var(--glass-bg) !important;
+    border: 1px solid var(--border-glass) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border-radius: var(--radius-lg) !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45) !important;
+}
+
+/* Legal-page form labels: the reference uses a muted caption, not an accent. */
+body:has(.wrap) label,
+body:has(.panel) label {
+    color: var(--text-dim) !important;
+}
+
+/* Password strength meter — recoloured red → amber → purple → green.
+   Only background-image/size are overridden so the inline background-position
+   that the strength script drives keeps working. */
+.strength span,
+#strength-bar {
+    background-image: linear-gradient(90deg, #f87171 0%, #fbbf24 33%, #a855f7 66%, #34d399 100%) !important;
+    background-size: 400% 100% !important;
+}
+
+/* Resume / password helpers on the reset page */
+.pw-toggle {
+    background: var(--glass-bg-strong) !important;
+    border: 1px solid var(--border-glass) !important;
+    color: var(--text-muted) !important;
+    border-radius: var(--border-radius-xs) !important;
+}
+
+.pw-toggle:hover,
+.pw-toggle:focus {
+    color: var(--text-primary) !important;
+    border-color: var(--border-active) !important;
+}
+
+.field-note {
+    color: var(--text-dim) !important;
+}
+
+/* ═══════════════════════ 8b. LIGHT-THEME REFINEMENTS ═══════════════════════ */
+
+/* Glass that was hardcoded dark needs an explicit light counterpart. */
+[data-theme="light"] .toast,
+[data-theme="light"] .call-topbar,
+[data-theme="light"] .transcript-panel,
+[data-theme="light"] .call-transcript-panel,
+[data-theme="light"] .answers-review-panel,
+[data-theme="light"] .chart-empty,
+[data-theme="light"] .empty-banner {
+    background: rgba(255, 255, 255, 0.94) !important;
+    border-color: var(--border-glass) !important;
+    color: var(--text-primary) !important;
+}
+
+/* White-on-white needs a touch more separation than dark-on-dark. */
+[data-theme="light"] .card,
+[data-theme="light"] .metric-card,
+[data-theme="light"] .resource-card,
+[data-theme="light"] .article-card,
+[data-theme="light"] .achievement-card,
+[data-theme="light"] .level-card,
+[data-theme="light"] .step,
+[data-theme="light"] .testimonial-card,
+[data-theme="light"] .panel {
+    background: rgba(255, 255, 255, 0.88) !important;
+    border-color: rgba(15, 15, 30, 0.09) !important;
+    box-shadow: 0 1px 2px rgba(20, 20, 40, 0.05), 0 10px 28px rgba(20, 20, 40, 0.08) !important;
+}
+
+[data-theme="light"] .features,
+[data-theme="light"] .cta-box {
+    background: rgba(255, 255, 255, 0.82) !important;
+    border-color: rgba(15, 15, 30, 0.09) !important;
+}
+
+[data-theme="light"] .main-content {
+    background: transparent !important;
+}
+
+[data-theme="light"] .feature p,
+[data-theme="light"] .description,
+[data-theme="light"] .section-subtitle {
+    color: var(--text-muted) !important;
+}
+
+/* ═══ 8c. RESIDUAL LEGACY-BLUE CLEANUP ═══
+   Sweep of the remaining places the old blue palette survived with enough
+   specificity (or in a box-shadow / gradient) to resist the token swap. */
+
+/* Brand wordmark was a white→blue gradient clipped to text */
+.brand-name,
+.mobile-brand-name,
+.mobile-nav-brand .brand-name {
+    background: linear-gradient(135deg, #ffffff 0%, var(--accent-text) 100%) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    color: transparent !important;
+}
+
+/* Active nav rows carried a blue outer glow */
+.nav-link.active,
+.nav-menu .nav-link.active,
+.mobile-nav .nav-link.active,
+.nav-item.active .nav-link {
+    box-shadow: inset 0 0 0 1px rgba(168, 85, 247, 0.3),
+                0 0 20px rgba(147, 51, 234, 0.14) !important;
+}
+
+/* Sidebar sign-in pill */
+.sidebar-login-btn {
+    background: rgba(147, 51, 234, 0.14) !important;
+    border: 1px solid rgba(168, 85, 247, 0.3) !important;
+    color: var(--accent-text) !important;
+}
+
+.sidebar-login-btn:hover {
+    background: rgba(147, 51, 234, 0.26) !important;
+    border-color: var(--border-active) !important;
+    color: #fff !important;
+}
+
+/* Field labels were blue; the reference uses a muted caption instead */
+.form-label,
+label.form-label,
+.form-group > label {
+    color: var(--text-dim) !important;
+}
+
+/* Interview-room details */
+.candidate-avatar-large,
+.interviewer-avatar-large {
+    box-shadow: 0 8px 30px rgba(147, 51, 234, 0.3) !important;
+}
+
+.interviewer-avatar-large-ring {
+    border-color: rgba(168, 85, 247, 0.28) !important;
+}
+
+.call-next-btn {
+    border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.mobile-nav-panel {
+    border-color: var(--border-glass) !important;
+}
+
+/* Feedback modal */
+.feedback-modal {
+    border-color: var(--border-glass) !important;
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6) !important;
+}
+
+.feedback-submit-btn {
+    background: var(--btn-gradient) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #fff !important;
+    box-shadow: var(--btn-shadow) !important;
+}
+
+.feedback-submit-btn:hover {
+    background: var(--btn-gradient-hover) !important;
+    box-shadow: var(--btn-shadow-hover) !important;
+}
+
+.feedback-rating-text,
+.feedback-rating-label {
+    color: var(--accent-text) !important;
+}
+
+/* ═══════════════════════ 9. SKELETONS (recoloured) ═══════════════════════ */
+.skeleton:not(.is-loaded) {
+    background: linear-gradient(90deg,
+        rgba(147, 51, 234, 0.1) 25%,
+        rgba(168, 85, 247, 0.26) 50%,
+        rgba(147, 51, 234, 0.1) 75%) !important;
+    background-size: 200% 100% !important;
+}
+
+[data-theme="light"] .skeleton:not(.is-loaded) {
+    background: linear-gradient(90deg,
+        rgba(124, 58, 237, 0.08) 25%,
+        rgba(124, 58, 237, 0.2) 50%,
+        rgba(124, 58, 237, 0.08) 75%) !important;
+    background-size: 200% 100% !important;
+}
+
+.chart-skeleton {
+    background: repeating-linear-gradient(45deg,
+        rgba(147, 51, 234, 0.06) 0 12px,
+        rgba(147, 51, 234, 0.11) 12px 24px) !important;
+}
+
+/* ═══════════════════════ 10. RESPONSIVE POLISH ═══════════════════════ */
+@media (max-width: 1200px) {
+    body::before,
+    body::after {
+        filter: blur(50px);
+        opacity: 0.9;
+    }
+}
+
+@media (max-width: 768px) {
+    .login-wrapper,
+    .welcome-popup-card,
+    .feedback-modal-content,
+    .resume-modal-content {
+        border-radius: 22px !important;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .btn-primary:hover,
+    .get-started:hover,
+    .login-submit:hover,
+    .card:hover,
+    .metric-card:hover {
+        transform: none;
+    }
+}
+/* ═══════════════════════ ASSESSMENT PROCTORING ═══════════════════════ */
+/* Fullscreen / screen-share controls, the interview environment check,
+   live status pills and the non-blocking warning banner. Built entirely on
+   the existing tokens above — no new palette, no layout changes. */
+
+/* — Live status strip inside the interview room — */
+.call-proctor-strip {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    padding: 0.55rem 1.35rem;
+    background: rgba(11, 11, 15, 0.6);
+    border-bottom: 1px solid var(--border-glass);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+.proctor-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.26rem 0.65rem;
+    border-radius: var(--radius-pill);
+    background: var(--glass-bg-strong);
+    border: 1px solid var(--border-glass);
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+.proctor-status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--text-dim);
+    flex-shrink: 0;
+}
+
+.proctor-status-text {
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    opacity: 0.85;
+}
+
+.proctor-status[data-state="on"] {
+    border-color: rgba(52, 211, 153, 0.35);
+    color: var(--text-secondary);
+}
+
+.proctor-status[data-state="on"] .proctor-status-dot {
+    background: var(--success);
+    box-shadow: 0 0 8px var(--success-glow);
+}
+
+.proctor-status[data-state="warn"] {
+    border-color: rgba(251, 191, 36, 0.35);
+    color: var(--warning);
+}
+
+.proctor-status[data-state="warn"] .proctor-status-dot {
+    background: var(--warning);
+    box-shadow: 0 0 8px rgba(251, 191, 36, 0.35);
+}
+
+.proctor-status[data-state="bad"] {
+    border-color: rgba(248, 113, 113, 0.35);
+    color: var(--danger);
+}
+
+.proctor-status[data-state="bad"] .proctor-status-dot {
+    background: var(--danger);
+}
+
+/* — Fullscreen mode: fill the screen evenly, with balanced margins — */
+#interview-view:fullscreen,
+#interview-view:-webkit-full-screen {
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-base);
+    padding: clamp(0.75rem, 1.6vw, 2rem);
+    overflow: hidden;
+}
+
+#interview-view:fullscreen .interview-call-container,
+#interview-view:-webkit-full-screen .interview-call-container {
+    width: 100%;
+    max-width: 1800px;
+    margin: 0 auto;
+    flex: 1 1 auto;
+    height: auto;
+    min-height: 0;
+}
+
+/* — Interview Environment Check (pre-session screen) — */
+.assessment-check-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-bottom: 1.4rem;
+}
+
+.assessment-check-item {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.8rem 1rem;
+    background: var(--glass-bg);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--border-radius-sm);
+}
+
+.assessment-check-icon {
+    font-size: 1.25rem;
+    line-height: 1;
+    width: 1.6rem;
+    text-align: center;
+}
+
+.assessment-check-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    flex: 1;
+    min-width: 0;
+}
+
+.assessment-check-name {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.assessment-check-note {
+    font-size: 0.76rem;
+    color: var(--text-muted);
+}
+
+.assessment-check-status {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 0.3rem 0.6rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border-glass);
+    background: var(--glass-bg-strong);
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+.assessment-check-status.is-ready {
+    color: var(--success);
+    border-color: rgba(52, 211, 153, 0.35);
+    background: var(--success-glow);
+}
+
+.assessment-check-status.is-warn {
+    color: var(--warning);
+    border-color: rgba(251, 191, 36, 0.35);
+    background: rgba(251, 191, 36, 0.1);
+}
+
+.assessment-check-status.is-bad {
+    color: var(--danger);
+    border-color: rgba(248, 113, 113, 0.35);
+    background: var(--danger-glow);
+}
+
+.assessment-check-action {
+    padding: 0.42rem 0.85rem !important;
+    font-size: 0.76rem !important;
+    width: auto !important;
+    white-space: nowrap;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.assessment-setup-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    align-items: stretch;
+}
+
+.assessment-setup-hint {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    text-align: center;
+}
+
+.assessment-setup-hint.is-warning {
+    color: var(--warning);
+}
+
+/* — Non-blocking warning banner (fullscreen exit / sharing stopped) — */
+.proctor-warning {
+    position: fixed;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 12000;
+    display: none;
+    align-items: center;
+    gap: 0.7rem;
+    max-width: min(92vw, 720px);
+    padding: 0.75rem 0.9rem;
+    background: rgba(17, 17, 22, 0.96);
+    border: 1px solid rgba(251, 191, 36, 0.45);
+    border-radius: var(--border-radius-sm);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+.proctor-warning.proctor-warning-flash {
+    animation: proctorWarningIn 0.35s ease;
+}
+
+@keyframes proctorWarningIn {
+    from { opacity: 0; transform: translate(-50%, -14px); }
+    to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+.proctor-warning-icon {
+    font-size: 1.1rem;
+}
+
+.proctor-warning-text {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.45;
+    flex: 1;
+    min-width: 0;
+}
+
+.proctor-warning-action {
+    padding: 0.42rem 0.9rem !important;
+    font-size: 0.76rem !important;
+    width: auto !important;
+    white-space: nowrap;
+}
+
+.proctor-warning-dismiss {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 0.85rem;
+    padding: 0.2rem 0.35rem;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.proctor-warning-dismiss:hover {
+    color: var(--text-primary);
+    background: var(--glass-bg-hover);
+}
+
+[data-theme="light"] .call-proctor-strip {
+    background: rgba(255, 255, 255, 0.75);
+}
+
+[data-theme="light"] .assessment-check-item {
+    background: rgba(255, 255, 255, 0.6);
+}
+
+[data-theme="light"] .proctor-warning {
+    background: rgba(255, 255, 255, 0.98);
+    border-color: rgba(217, 119, 6, 0.45);
+    box-shadow: 0 18px 50px rgba(15, 23, 42, 0.18);
+}
+
+@media (max-width: 768px) {
+    .call-proctor-strip {
+        padding: 0.4rem 0.75rem;
+        gap: 0.35rem;
+    }
+
+    .proctor-status {
+        font-size: 0.62rem;
+        padding: 0.22rem 0.5rem;
+    }
+
+    .assessment-check-item {
+        flex-wrap: wrap;
+    }
+
+    .proctor-warning {
+        top: 10px;
+        padding: 0.65rem 0.75rem;
+    }
+
+    .proctor-warning-text {
+        font-size: 0.8rem;
+    }
+}
+/* ══════════════ TEXT VISIBILITY FIXES — LIGHT THEME ONLY ══════════════ */
+/* Elements that kept a dark-theme white or a legacy blue/brown colour after
+   the switch to light now get a readable counterpart. Every rule below is
+   scoped to [data-theme="light"], so the dark theme keeps its exact current
+   colours — only the illegible light-theme states are corrected. */
+
+/* Sidebar / drawer: the Log Out label was rgba(255,255,255,0.7) on a pale
+   red tint (1.05:1 — effectively invisible). */
+[data-theme="light"] .sidebar-logout-btn {
+    color: #b91c1c !important;
+}
+
+[data-theme="light"] .sidebar-logout-btn:hover {
+    color: #991b1b !important;
+}
+
+/* Sidebar target role + topbar description kept legacy #5B9BD5 (2.9:1). */
+[data-theme="light"] .userrole,
+[data-theme="light"] .page-title p {
+    color: var(--text-muted) !important;
+}
+
+/* "I agree to the Terms…" checkbox label on login / signup (legacy blue). */
+[data-theme="light"] .check-text {
+    color: var(--text-muted) !important;
+}
+
+/* Interview room top bar: these kept their white dark-theme colours and
+   disappeared on the light topbar. */
+[data-theme="light"] .call-question-counter,
+[data-theme="light"] .question-difficulty,
+[data-theme="light"] .question-hint-text,
+[data-theme="light"] .interviewer-role-sub {
+    color: var(--text-muted) !important;
+}
+
+[data-theme="light"] .call-timer-large {
+    color: var(--text-secondary) !important;
+}
+
+/* "Excellent" connection label kept the dark-theme mint green (1.9:1). */
+[data-theme="light"] .connection-text {
+    color: #047857 !important;
+}
+
+/* Enabled Mic / Camera / Transcript buttons inherited legacy brown #C47C6A
+   (2.8:1) from the old .active rule. */
+[data-theme="light"] .call-control-btn.active {
+    color: var(--accent-text-strong) !important;
+}
+
+[data-theme="light"] .call-control-btn.muted {
+    color: #b91c1c !important;
+}
+
+/* End button rides the red gradient in both themes — the light build gave it
+   dark slate text on that gradient; white matches the intended pairing. */
+[data-theme="light"] .call-end-btn {
+    color: #ffffff !important;
+}
+
+/* Recording state: the red used in dark is too light on the light bar. */
+[data-theme="light"] .call-record-btn.recording,
+[data-theme="light"] .call-recording-badge {
+    color: #dc2626 !important;
+}
+
+/* Feedback modal: "Skip for now" was rgba(255,255,255,0.4) (1.02:1) and the
+   rating stars stayed dark-theme amber (1.6:1) on the light sheet. */
+[data-theme="light"] .feedback-skip-btn {
+    color: var(--text-muted) !important;
+}
+
+[data-theme="light"] .feedback-stars .star,
+[data-theme="light"] .star.active {
+    color: #b45309 !important;
+}
+
+/* Placeholders that stayed white-on-white inside the light text boxes. */
+[data-theme="light"] .transcript-textarea::placeholder,
+[data-theme="light"] .feedback-textarea::placeholder {
+    color: var(--text-dim) !important;
+}
+
+/* Assessment environment-check status chips (interview setup screen). */
+[data-theme="light"] .assessment-check-status.is-ready {
+    color: #047857 !important;
+}
+
+[data-theme="light"] .assessment-check-status.is-warn {
+    color: #b45309 !important;
+}
+
+[data-theme="light"] .assessment-check-status.is-bad {
+    color: #b91c1c !important;
+}
+
+/* Question category badge: accent text sat at 4.34:1 on its own tint chip —
+   the strong accent keeps the hue and clears AA. */
+[data-theme="light"] .question-category-badge {
+    color: var(--accent-text-strong) !important;
+}
+
+/* Login / signup input placeholder kept the legacy blue (2.9:1) — use the
+   same dim token the rest of the design system uses for placeholders. */
+[data-theme="light"] .login-input::placeholder {
+    color: var(--text-dim) !important;
+}

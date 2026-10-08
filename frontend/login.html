@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview.AI — Login</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="stylesheet" href="/css/login.css">
+    <!-- Interview.AI design system — loaded last so it owns the visual language -->
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+
+    <!-- MAIN WRAPPER — TWO COLUMNS -->
+    <div class="login-wrapper">
+
+        <!-- LEFT PANEL — BRANDING + ILLUSTRATION -->
+        <div class="login-left">
+            <div class="login-brand">
+                <div class="login-brand-logo">
+                    <div class="login-brand-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15.5h-2v-2h2v2zm0-4.5h-2v-5h2v5zm4 4.5h-2v-5h2v5zm0-6.5h-2v-3h2v3z"/></svg>
+                    </div>
+                    <span class="login-brand-text">Interview.AI</span>
+                </div>
+            </div>
+
+            <div class="login-hero">
+                <h1>Master Your<br><span>Interview Skills</span></h1>
+                <p>Practice with AI-powered mock interviews. Get real-time feedback and ace your next job interview.</p>
+            </div>
+
+            <div class="login-illustration">
+                <div class="illustration-container">
+                    <div class="illustration-sphere"></div>
+                    <div class="illustration-waves">
+                        <div class="wave-line"></div>
+                        <div class="wave-line"></div>
+                        <div class="wave-line"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="login-welcome-badge">
+                <p>Welcome to the community! <strong>Login to explore</strong> features, track progress, and unlock achievements.</p>
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL — FORM -->
+        <div class="login-right">
+
+            <!-- ═══ EMAIL LOGIN FORM ═══ -->
+            <div class="auth-panel active" id="panel-email-login">
+                <h2 class="login-form-title">Login your account!</h2>
+                <p class="login-form-subtitle">Welcome back! Enter your credentials to continue.</p>
+
+                <form id="email-login-form" onsubmit="handleEmailLogin(event)">
+                    <div class="input-group">
+                        <label for="login-email">E-mail</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">
+                                <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="3"/><polyline points="22,4 12,13 2,4"/></svg>
+                            </span>
+                            <input class="login-input" type="email" id="login-email" placeholder="Enter your email" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="login-password">Password</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">
+                                <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><circle cx="12" cy="16" r="1"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                            </span>
+                            <input class="login-input" type="password" id="login-password" placeholder="Enter your password" required>
+                        </div>
+                    </div>
+
+                    <div class="forgot-link">
+                        <a href="#" onclick="switchAuthTab('forgot'); return false;">Forgot password?</a>
+                    </div>
+
+                    <div class="terms-check">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="terms-login">
+                            <span class="checkmark"></span>
+                            <span class="check-text">I agree to the <a href="/terms.html">Terms of Service</a> and <a href="/privacy.html">Privacy Policy</a></span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="login-submit" id="login-submit-btn">
+                        <span class="btn-text">Continue</span>
+                        <span class="spinner"></span>
+                    </button>
+                </form>
+
+                <!-- Demo credentials are injected here by JS only with ?demo=1 -->
+                <div id="demo-creds" class="demo-creds" hidden></div>
+
+                <div class="social-login">
+                    <button class="social-btn" onclick="showToast('Facebook login coming soon!', 'info')" title="Facebook">
+                        <svg viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    </button>
+                    <button class="social-btn" id="google-login-btn" onclick="handleGoogleLogin()" title="Google">
+                        <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                    </button>
+                    <button class="social-btn" onclick="showToast('Apple login coming soon!', 'info')" title="Apple">
+                        <svg viewBox="0 0 24 24" fill="#333"><path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+                    </button>
+                </div>
+
+                <p class="signup-link">Don't have an account? <a href="#" onclick="switchAuthTab('signup'); return false;">Sign up</a></p>
+            </div>
+
+            <!-- ═══ SIGNUP FORM ═══ -->
+            <div class="auth-panel" id="panel-signup">
+                <h2 class="login-form-title">Create Account</h2>
+                <p class="login-form-subtitle">Start your interview preparation journey today.</p>
+
+                <form id="signup-form" onsubmit="handleSignup(event)">
+                    <div class="input-group">
+                        <label for="signup-name">Full Name</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">
+                                <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            </span>
+                            <input class="login-input" type="text" id="signup-name" placeholder="John Doe" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="signup-email">Email Address</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">
+                                <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="3"/><polyline points="22,4 12,13 2,4"/></svg>
+                            </span>
+                            <input class="login-input" type="email" id="signup-email" placeholder="you@example.com" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="signup-password">Password</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">
+                                <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><circle cx="12" cy="16" r="1"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                            </span>
+                            <input class="login-input" type="password" id="signup-password" placeholder="Min. 8 characters" required minlength="8">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="signup-confirm">Confirm Password</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">
+                                <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            </span>
+                            <input class="login-input" type="password" id="signup-confirm" placeholder="Repeat your password" required>
+                        </div>
+                    </div>
+
+                    <div class="terms-check" style="margin-top: 0.5rem;">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="terms-signup">
+                            <span class="checkmark"></span>
+                            <span class="check-text">I agree to the <a href="/terms.html">Terms of Service</a> and <a href="/privacy.html">Privacy Policy</a></span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="login-submit" style="margin-top: 0.75rem;">
+                        <span class="btn-text">Create Account</span>
+                        <span class="spinner"></span>
+                    </button>
+                </form>
+
+                <div class="login-divider">
+                    <span>Sign up with</span>
+                </div>
+
+                <div class="social-login">
+                    <button class="social-btn" onclick="showToast('Facebook signup coming soon!', 'info')" title="Facebook">
+                        <svg viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    </button>
+                    <button class="social-btn" id="google-signup-btn" onclick="handleGoogleLogin()" title="Google">
+                        <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                    </button>
+                    <button class="social-btn" onclick="showToast('Apple signup coming soon!', 'info')" title="Apple">
+                        <svg viewBox="0 0 24 24" fill="#333"><path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+                    </button>
+                </div>
+
+                <p class="signup-link">Already have an account? <a href="#" onclick="switchAuthTab('email'); return false;">Log in</a></p>
+            </div>
+
+            <!-- COMPLETE REGISTRATION (first-time Google sign-up) -->
+            <div class="auth-panel" id="panel-complete-profile">
+                <h2 class="login-form-title">Complete your registration</h2>
+                <p class="login-form-subtitle">Just one more step to finish setting up your account.</p>
+
+                <form id="complete-profile-form" onsubmit="handleCompleteProfile(event)">
+                    <div class="input-group">
+                        <label for="complete-name">Full Name</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">
+                                <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            </span>
+                            <input class="login-input" type="text" id="complete-name" placeholder="John Doe" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="complete-role">Target Role</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">
+                                <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+                            </span>
+                            <select class="login-input" id="complete-role" required></select>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="complete-email">Email Address</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">
+                                <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="3"/><polyline points="22,4 12,13 2,4"/></svg>
+                            </span>
+                            <input class="login-input" type="email" id="complete-email" readonly>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="login-submit" id="complete-submit-btn" style="margin-top: 0.75rem;">
+                        <span class="btn-text">Finish Setup</span>
+                        <span class="spinner"></span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- ═══ EMAIL VERIFICATION NOTICE ═══ -->
+            <div class="auth-panel" id="panel-verify">
+                <div class="verify-panel">
+                    <div class="verify-check">
+                        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <h2>Check Your Email</h2>
+                    <p id="verify-email-text">We sent a verification link to <strong>you@example.com</strong>. Click the link to activate your account.</p>
+                    <button class="login-submit" onclick="resendVerification()" style="margin-bottom: 0.5rem;">
+                        <span class="btn-text">Resend Email</span>
+                    </button>
+                    <div class="back-link">
+                        <a href="#" onclick="switchAuthTab('email'); return false;">← Back to Login</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══ FORGOT PASSWORD ═══ -->
+            <div class="auth-panel" id="panel-forgot">
+                <h2 class="login-form-title">Reset your password</h2>
+                <p class="login-form-subtitle">Enter the email you signed up with and we'll send you a reset link.</p>
+
+                <form id="forgot-form" onsubmit="handleForgot(event)">
+                    <div class="input-group">
+                        <label for="forgot-email">E-mail</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">
+                                <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="3"/><polyline points="22,4 12,13 2,4"/></svg>
+                            </span>
+                            <input class="login-input" type="email" id="forgot-email" placeholder="Enter your email" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="login-submit" id="forgot-submit-btn">
+                        <span class="btn-text">Send reset link</span>
+                        <span class="spinner"></span>
+                    </button>
+                </form>
+
+                <div id="forgot-result"></div>
+
+                <div class="back-link">
+                    <a href="#" onclick="switchAuthTab('email'); return false;">← Back to Login</a>
+                </div>
+            </div>
+
+            <!-- Toast -->
+            <div class="toast" id="toast"></div>
+        </div>
+    </div>
+
+    <!-- Theme Toggle Button -->
+    <button class="login-theme-btn" id="login-theme-btn" title="Toggle dark/light theme">
+        <svg class="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="theme-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+
+    <script>
+    /* ═══ THEME SYNC WITH DASHBOARD ═══ */
+    (function() {
+        var saved = localStorage.getItem('app-theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', saved);
+        updateThemeIcon(saved);
+
+        document.getElementById('login-theme-btn').addEventListener('click', function() {
+            var current = document.documentElement.getAttribute('data-theme') || 'light';
+            var next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('app-theme', next);
+            updateThemeIcon(next);
+        });
+
+        function updateThemeIcon(theme) {
+            var btn = document.getElementById('login-theme-btn');
+            if (!btn) return;
+            if (theme === 'dark') {
+                btn.classList.add('is-dark');
+            } else {
+                btn.classList.remove('is-dark');
+            }
+        }
+    })();
+
+    /* ═══ API + SESSION HELPERS ═══ */
+    const API_BASE = '/api';
+
+    async function apiPost(path, body) {
+        const res = await fetch(API_BASE + path, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+        });
+        const data = await res.json().catch(() => ({}));
+        return { ok: res.ok, status: res.status, data };
+    }
+
+    function escapeHtml(value) {
+        return String(value).replace(/[&<>"']/g, c => ({
+            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        })[c]);
+    }
+
+    function setBusy(btn, busy, text) {
+        if (!btn) return;
+        btn.disabled = busy;
+        btn.classList.toggle('loading', busy);
+        const label = btn.querySelector('.btn-text');
+        if (label && text) label.textContent = text;
+    }
+
+    /* Persist the account the server actually authenticated. */
+    function startSession(user, message) {
+        const session = {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            role: user.role || 'user',
+            target_role: user.target_role || 'Software Engineer',
+            avatar_url: user.avatar_url || '',
+            provider: user.provider || 'email',
+            created: user.created || Date.now()
+        };
+        localStorage.setItem('user', JSON.stringify(session));
+        localStorage.setItem('interview_current_user', JSON.stringify(session));
+        // Greet a fresh sign-in, never a page refresh.
+        localStorage.removeItem('interview_welcome_shown');
+        localStorage.removeItem('welcome-dismissed');
+        if (message) showToast(message, 'success');
+        return session;
+    }
+
+    /* ═══ TAB SWITCHING ═══ */
+    function switchAuthTab(tab) {
+        document.querySelectorAll('.auth-panel').forEach(p => p.classList.remove('active'));
+
+        if (tab === 'email') {
+            document.getElementById('panel-email-login').classList.add('active');
+        } else if (tab === 'signup') {
+            document.getElementById('panel-signup').classList.add('active');
+        } else if (tab === 'verify') {
+            document.getElementById('panel-verify').classList.add('active');
+        } else if (tab === 'forgot') {
+            document.getElementById('panel-forgot').classList.add('active');
+            const result = document.getElementById('forgot-result');
+            if (result) result.innerHTML = '';
+        } else if (tab === 'complete-profile') {
+            document.getElementById('panel-complete-profile').classList.add('active');
+        }
+    }
+
+    /* ═══ VERIFY PANEL ═══ */
+    let lastVerifyEmail = '';
+    let lastVerificationLink = '';
+
+    function showVerifyPanel(email, verificationLink) {
+        lastVerifyEmail = email;
+        lastVerificationLink = verificationLink || '';
+
+        let html = 'We sent a verification link to <strong>' + escapeHtml(email) +
+                   '</strong>. Click the link in your email to activate your account.';
+
+        if (lastVerificationLink) {
+            html += '<div class="verify-fallback">' +
+                        '<p>Email sending isn\'t configured on this server yet, so open this link instead:</p>' +
+                        '<a href="' + escapeHtml(lastVerificationLink) + '" target="_blank" rel="noopener">' +
+                            escapeHtml(lastVerificationLink) +
+                        '</a>' +
+                        '<button type="button" id="copy-verify-btn">Copy link</button>' +
+                    '</div>';
+        }
+
+        document.getElementById('verify-email-text').innerHTML = html;
+        const copyBtn = document.getElementById('copy-verify-btn');
+        if (copyBtn) copyBtn.addEventListener('click', copyVerificationLink);
+
+        switchAuthTab('verify');
+    }
+
+    function copyVerificationLink() {
+        if (!lastVerificationLink) return;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(lastVerificationLink)
+                .then(() => showToast('Verification link copied', 'success'))
+                .catch(() => showToast('Select the link and copy it manually', 'error'));
+        } else {
+            showToast('Select the link and copy it manually', 'info');
+        }
+    }
+
+    /* ═══ LOGIN HANDLER — REQUIRES EXISTING ACCOUNT ═══ */
+    // Demo credentials are shown ONLY when the URL has ?demo=1 so live users
+    // never see them. Values are base64-encoded to stay out of plain sight in
+    // the page source; anyone who needs them was told the URL privately.
+    (function setupDemoCreds() {
+        if (new URLSearchParams(window.location.search).get('demo') !== '1') return;
+        const box = document.getElementById('demo-creds');
+        if (!box) return;
+        const password = atob('RGVtb0AxMjM0');
+        const creds = [
+            { icon: '👤 User', email: atob('dXNlckBkZW1vLmNvbQ=='), password: password },
+            { icon: '👑 Admin', email: atob('YWRtaW5AZGVtby5jb20='), password: password },
+        ];
+        const title = document.createElement('div');
+        title.className = 'demo-creds-title';
+        title.textContent = 'Demo credentials (click to fill)';
+        box.appendChild(title);
+        for (const c of creds) {
+            const row = document.createElement('button');
+            row.type = 'button';
+            row.className = 'demo-cred-row';
+            const role = document.createElement('span');
+            role.className = 'demo-cred-role';
+            role.textContent = c.icon;
+            const detail = document.createElement('span');
+            detail.className = 'demo-cred-detail';
+            detail.textContent = c.email + ' / ' + c.password;
+            row.appendChild(role);
+            row.appendChild(detail);
+            row.addEventListener('click', () => {
+                document.getElementById('login-email').value = c.email;
+                document.getElementById('login-password').value = c.password;
+                const terms = document.getElementById('terms-login');
+                if (terms) terms.checked = true;
+            });
+            box.appendChild(row);
+        }
+        box.hidden = false;
+    })();
+
+    async function handleEmailLogin(e) {
+        e.preventDefault();
+        const email = document.getElementById('login-email').value.trim().toLowerCase();
+        const password = document.getElementById('login-password').value;
+        const btn = document.getElementById('login-submit-btn');
+
+        if (!email || !password) {
+            showToast('Please fill in all fields', 'error');
+            return;
+        }
+
+        const termsLogin = document.getElementById('terms-login');
+        if (termsLogin && !termsLogin.checked) {
+            showToast('Please agree to the Terms of Service', 'error');
+            return;
+        }
+
+        setBusy(btn, true, 'Logging in...');
+
+        try {
+            const { ok, data } = await apiPost('/auth/login', { email, password });
+
+            if (ok && data.success) {
+                startSession(data.user, 'Welcome back, ' + data.user.name + '!');
+                // Redirect admins to admin panel
+                if (data.user.role === 'admin') {
+                    sessionStorage.setItem('redirect_admin', 'true');
+                }
+                setTimeout(() => { window.location.href = 'index.html'; }, 900);
+            } else if (data.needs_verification) {
+                showVerifyPanel(email, data.verification_link || '');
+                showToast('Please verify your email first', 'info');
+            } else {
+                showToast(data.error || 'Invalid email or password', 'error');
+            }
+        } catch (err) {
+            showToast('Connection error. Please try again.', 'error');
+        } finally {
+            setBusy(btn, false, 'Continue');
+        }
+    }
+
+    /* ═══ SIGNUP HANDLER — REAL ACCOUNT ON THE SERVER ═══ */
+    async function handleSignup(e) {
+        e.preventDefault();
+        const name = document.getElementById('signup-name').value.trim();
+        const email = document.getElementById('signup-email').value.trim().toLowerCase();
+        const password = document.getElementById('signup-password').value;
+        const confirm = document.getElementById('signup-confirm').value;
+        const btn = e.target.querySelector('button[type="submit"]');
+
+        if (!name || !email || !password || !confirm) {
+            showToast('Please fill in all fields', 'error');
+            return;
+        }
+
+        if (password !== confirm) {
+            showToast('Passwords do not match!', 'error');
+            return;
+        }
+
+        if (password.length < 8) {
+            showToast('Password must be at least 8 characters', 'error');
+            return;
+        }
+
+        const termsSignup = document.getElementById('terms-signup');
+        if (termsSignup && !termsSignup.checked) {
+            showToast('Please agree to the Terms of Service', 'error');
+            return;
+        }
+
+        setBusy(btn, true, 'Creating account...');
+
+        try {
+            const { ok, data } = await apiPost('/auth/signup', { name, email, password });
+
+            if (ok && data.success) {
+                showVerifyPanel(email, data.verification_link || '');
+                showToast(
+                    data.email_sent === false
+                        ? 'Account created — verify it to continue'
+                        : 'Account created! Check your email 📧',
+                    'success'
+                );
+            } else {
+                showToast(data.error || 'Failed to create account', 'error');
+            }
+        } catch (err) {
+            showToast('Connection error. Please try again.', 'error');
+        } finally {
+            setBusy(btn, false, 'Create Account');
+        }
+    }
+
+    /* ═══ GOOGLE LOGIN — REAL OAUTH (authorization code flow) ═══ */
+    const googleAuth = { clientId: '' };
+
+    async function loadGoogleConfig() {
+        try {
+            const res = await fetch(API_BASE + '/config');
+            const cfg = await res.json();
+            googleAuth.clientId = cfg.google_client_id || '';
+        } catch (err) {
+            googleAuth.clientId = '';
+        }
+    }
+
+    function handleGoogleLogin() {
+        if (!googleAuth.clientId) {
+            showToast("Google sign-in isn't set up yet. Add GOOGLE_CLIENT_ID to your .env file.", 'error');
+            return;
+        }
+
+        const state = crypto.getRandomValues(new Uint32Array(4)).join('');
+        sessionStorage.setItem('google_oauth_state', state);
+
+        const params = new URLSearchParams({
+            client_id: googleAuth.clientId,
+            redirect_uri: window.location.origin + '/login.html',
+            response_type: 'code',
+            scope: 'openid email profile',
+            state: state,
+            prompt: 'select_account'
+        });
+
+        window.location.href = 'https://accounts.google.com/o/oauth2/v2/auth?' + params.toString();
+    }
+
+    /* Handle the ?code=... redirect back from Google. */
+    async function completeGoogleLogin() {
+        const params = new URLSearchParams(window.location.search);
+        const code = params.get('code');
+        const state = params.get('state');
+        const error = params.get('error');
+
+        if (!code && !error) return;
+
+        // Strip the OAuth parameters back out of the address bar.
+        window.history.replaceState(null, '', window.location.pathname);
+
+        if (error) {
+            showToast(error === 'access_denied'
+                ? 'Google sign-in was cancelled.'
+                : 'Google sign-in failed: ' + error, 'error');
+            return;
+        }
+
+        const expected = sessionStorage.getItem('google_oauth_state');
+        sessionStorage.removeItem('google_oauth_state');
+        if (!expected || state !== expected) {
+            showToast('Google sign-in validation failed. Please try again.', 'error');
+            return;
+        }
+
+        showToast('Signing in with Google…', 'info');
+
+        try {
+            const { ok, data } = await apiPost('/auth/google', {
+                code: code,
+                redirect_uri: window.location.origin + '/login.html'
+            });
+
+            if (ok && data.success) {
+                data.user.provider = 'google';
+                const isNewAccount = !!data.is_new_user;
+
+                startSession(data.user, isNewAccount
+                    ? 'Google account created: one more step'
+                    : 'Signed in with Google as ' + data.user.name + '!');
+
+                // A brand-new Google account arrives with a name and email
+                // from Google but has never chosen a target role, so it
+                // finishes the same registration step the email signup form
+                // collects before reaching the dashboard. Returning users
+                // skip straight through, and admins are unaffected.
+                if (isNewAccount) {
+                    openCompleteProfilePanel(data.user);
+                    return;
+                }
+
+                // Redirect admins to admin panel
+                if (data.user.role === 'admin') {
+                    sessionStorage.setItem('redirect_admin', 'true');
+                }
+                setTimeout(() => { window.location.href = 'index.html'; }, 900);
+            } else {
+                showToast(data.error || 'Google sign-in failed', 'error');
+            }
+        } catch (err) {
+            showToast('Connection error. Please try again.', 'error');
+        }
+    }
+
+    /* ═══ COMPLETE REGISTRATION (first-time Google sign-up) ═══ */
+    // Google supplies the name and email but never a target role, so a brand-new
+    // Google account finishes the registration step the signup form collects.
+    async function openCompleteProfilePanel(user) {
+        const nameEl = document.getElementById('complete-name');
+        const emailEl = document.getElementById('complete-email');
+        const roleEl = document.getElementById('complete-role');
+
+        if (nameEl) nameEl.value = user.name || '';
+        if (emailEl) emailEl.value = user.email || '';
+
+        // Same endpoint the interview setup uses, with a safe fallback option.
+        if (roleEl && roleEl.options.length === 0) {
+            roleEl.innerHTML = '<option value="Software Engineer">Software Engineer</option>';
+            try {
+                const res = await fetch(API_BASE + '/roles');
+                const data = await res.json();
+                if (data && Array.isArray(data.roles) && data.roles.length) {
+                    roleEl.innerHTML = '';
+                    data.roles.forEach(function (role) {
+                        const opt = document.createElement('option');
+                        opt.value = role;
+                        opt.textContent = role;
+                        roleEl.appendChild(opt);
+                    });
+                }
+            } catch (err) { /* keep the default option */ }
+        }
+        if (roleEl && user.target_role) roleEl.value = user.target_role;
+
+        switchAuthTab('complete-profile');
+    }
+
+    async function handleCompleteProfile(event) {
+        event.preventDefault();
+
+        const btn = document.getElementById('complete-submit-btn');
+        const name = (document.getElementById('complete-name').value || '').trim();
+        const role = document.getElementById('complete-role').value;
+
+        if (!name) {
+            showToast('Please enter your name', 'error');
+            return;
+        }
+
+        setBusy(btn, true, 'Saving...');
+        try {
+            const { ok, data } = await apiPost('/auth/update-profile', {
+                name: name,
+                target_role: role
+            });
+
+            if (ok && data.success) {
+                // Keep the cached session in step with the server.
+                const cached = JSON.parse(localStorage.getItem('user') || '{}');
+                cached.name = name;
+                cached.target_role = role;
+                localStorage.setItem('user', JSON.stringify(cached));
+                localStorage.setItem('interview_current_user', JSON.stringify(cached));
+
+                showToast('Registration complete!', 'success');
+                setTimeout(function () { window.location.href = 'index.html'; }, 700);
+            } else {
+                showToast((data && data.error) || 'Could not save your details', 'error');
+                setBusy(btn, false, 'Finish Setup');
+            }
+        } catch (err) {
+            showToast('Connection error. Please try again.', 'error');
+            setBusy(btn, false, 'Finish Setup');
+        }
+    }
+
+    /* ═══ FORGOT PASSWORD ═══ */
+    async function handleForgot(e) {
+        e.preventDefault();
+        const email = document.getElementById('forgot-email').value.trim().toLowerCase();
+        const btn = document.getElementById('forgot-submit-btn');
+
+        if (!email || !email.includes('@')) {
+            showToast('Enter a valid email address', 'error');
+            return;
+        }
+
+        setBusy(btn, true, 'Sending…');
+
+        try {
+            const { ok, data } = await apiPost('/auth/forgot-password', { email });
+
+            if (ok && data.success) {
+                const box = document.getElementById('forgot-result');
+                let html = '<div class="verify-fallback"><p>';
+
+                html += data.email_sent
+                    ? 'If an account exists for <strong>' + escapeHtml(email) +
+                      '</strong>, a reset link is on its way. It expires in 2 hours.'
+                    : "Email sending isn't configured on this server yet — open this link to set a new password:";
+
+                html += '</p>';
+
+                if (data.reset_link) {
+                    html += '<a href="' + escapeHtml(data.reset_link) + '">' +
+                            escapeHtml(data.reset_link) + '</a>';
+                }
+
+                html += '</div>';
+                box.innerHTML = html;
+
+                showToast(data.email_sent ? 'Reset link sent 📧' : 'Reset link ready', 'success');
+            } else {
+                showToast(data.error || 'Could not send the reset link', 'error');
+            }
+        } catch (err) {
+            showToast('Connection error. Please try again.', 'error');
+        } finally {
+            setBusy(btn, false, 'Send reset link');
+        }
+    }
+
+    async function resendVerification() {
+        if (!lastVerifyEmail) {
+            showToast('Enter your email address first', 'error');
+            switchAuthTab('email');
+            return;
+        }
+
+        try {
+            const { ok, data } = await apiPost('/auth/resend-verification', { email: lastVerifyEmail });
+
+            if (ok && data.success) {
+                if (data.already_verified) {
+                    showToast('This account is already verified — you can log in.', 'success');
+                    switchAuthTab('email');
+                } else {
+                    showVerifyPanel(lastVerifyEmail, data.verification_link || '');
+                    showToast('Verification email resent 📧', 'success');
+                }
+            } else {
+                showToast(data.error || 'Could not resend the email', 'error');
+            }
+        } catch (err) {
+            showToast('Connection error. Please try again.', 'error');
+        }
+    }
+
+    /* ═══ TOAST ═══ */
+    function showToast(msg, type) {
+        const toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.className = 'toast ' + type + ' show';
+        setTimeout(() => { toast.classList.remove('show'); }, 3000);
+    }
+
+    /* ═══ INIT ═══ */
+    loadGoogleConfig();
+    completeGoogleLogin();
+    </script>
+</body>
+</html>

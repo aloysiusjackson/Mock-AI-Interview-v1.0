@@ -1,0 +1,10 @@
+Flask==3.0.3
+Flask-CORS==4.0.1
+python-dotenv==1.0.1
+gunicorn==26.0.0
+google-generativeai
+PyPDF2
+python-docx
+psycopg2-binary==2.9.9
+# Used by the Google OAuth token exchange (POST /api/auth/google)
+requests>=2.31.0

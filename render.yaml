@@ -1,0 +1,52 @@
+services:
+  - type: web
+    name: mock-ai-interview-backend
+    region: oregon
+    env: python
+    # psycopg2-binary==2.9.9 ships wheels for 3.12 but not 3.13, so pin the
+    # interpreter instead of letting the host pick a newer default and compile
+    # the driver from source (which fails without libpq headers).
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: gunicorn --chdir backend app:app --bind 0.0.0.0:$PORT --workers 2 --threads 4 --timeout 60 --access-logfile -
+    healthCheckPath: /api/roles
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.10"
+      - key: FLASK_ENV
+        value: production
+      # Supabase connection string. `sync: false` means Render asks for the value
+      # in the dashboard instead of storing it in this file — set it to the URI
+      # from: Supabase -> Project Settings -> Database -> Connection string -> URI
+      - key: DATABASE_URL
+        sync: false
+      # Signing key for session cookies. generateValue keeps it out of the repo
+      # and stable across deploys (otherwise sessions reset on every deploy).
+      - key: SECRET_KEY
+        generateValue: true
+      # Mark the session cookie Secure now that the site is served over HTTPS.
+      - key: COOKIE_SECURE
+        value: "1"
+      # Render terminates TLS in front of the app, so trust exactly one proxy
+      # hop. This is what makes HSTS get sent, keeps verification links on the
+      # public URL, and keys rate limits on the visitor instead of the proxy.
+      - key: TRUST_PROXY
+        value: "1"
+      # Set these in the dashboard (never in this file):
+      #   GEMINI_API_KEY        - optional, enables live AI grading
+      #   SMTP_EMAIL / SMTP_PASSWORD   - Gmail address + app password for
+      #                                  verification and password-reset emails
+      #   GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET - "Continue with Google"
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: SMTP_SERVER
+        value: smtp.gmail.com
+      - key: SMTP_PORT
+        value: "587"
+      - key: SMTP_EMAIL
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | Interview.AI</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="../css/theme.css">
+</head>
+<body>
+    <div class="admin-login-wrapper">
+        <div class="admin-login-glow glow-1"></div>
+        <div class="admin-login-glow glow-2"></div>
+        <div class="admin-login-card">
+            <div class="admin-login-brand">
+                <div class="admin-login-brand-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15.5h-2v-2h2v2zm0-4.5h-2v-5h2v5zm4 4.5h-2v-5h2v5zm0-6.5h-2v-3h2v3z"/></svg>
+                </div>
+                <span class="admin-login-brand-text">Interview<span class="accent">.AI</span> <span style="font-size: 0.7rem; color: #94a3b8; font-weight: 400;">Admin</span></span>
+            </div>
+
+            <h1 class="admin-login-title">Admin Login</h1>
+            <p class="admin-login-subtitle">Sign in to access the admin panel and manage the platform</p>
+
+            <div id="admin-login-error" class="admin-login-error" style="display: none;"></div>
+
+            <form id="admin-login-form" onsubmit="return handleAdminLogin(event)">
+                <div class="admin-login-input-group">
+                    <label class="admin-login-label" for="admin-email">Email Address</label>
+                    <input type="email" id="admin-email" class="admin-login-input" placeholder="admin@example.com" required autocomplete="email">
+                </div>
+
+                <div class="admin-login-input-group">
+                    <label class="admin-login-label" for="admin-password">Password</label>
+                    <input type="password" id="admin-password" class="admin-login-input" placeholder="Enter your password" required autocomplete="current-password">
+                </div>
+
+                <button type="submit" class="admin-login-submit" id="admin-login-submit">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px;"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+                    Sign In to Admin Panel
+                </button>
+            </form>
+
+            <!-- Demo credentials are injected here by JS only with ?demo=1 -->
+            <div id="demo-creds" class="demo-creds" hidden></div>
+
+            <a href="/" class="admin-login-back">← Back to Public Website</a>
+        </div>
+    </div>
+
+    <script>
+    // Admin login handler
+    async function handleAdminLogin(e) {
+        e.preventDefault();
+
+        const email = document.getElementById('admin-email').value.trim().toLowerCase();
+        const password = document.getElementById('admin-password').value;
+        const errorEl = document.getElementById('admin-login-error');
+        const submitBtn = document.getElementById('admin-login-submit');
+
+        // Reset error
+        errorEl.style.display = 'none';
+        errorEl.textContent = '';
+
+        // Validation
+        if (!email || !password) {
+            showAdminError('Please fill in all fields');
+            return false;
+        }
+
+        if (!email.includes('@')) {
+            showAdminError('Enter a valid email address');
+            return false;
+        }
+
+        // Set loading state
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Signing in...';
+        submitBtn.classList.add('loading');
+
+        try {
+            const res = await fetch('/api/auth/login', {
+                method: 'POST',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+
+            const data = await res.json();
+
+            if (res.ok && data.success) {
+                // The /api/auth/me endpoint returns the user object directly (no {success, user} wrapper)
+                const meRes = await fetch('/api/auth/me', { credentials: 'include' });
+                if (!meRes.ok) {
+                    showAdminError('Session error. Please login again.');
+                    return false;
+                }
+                const meData = await meRes.json();
+
+                if (meData && meData.role && (meData.role === 'admin' || meData.role === 'administrator')) {
+                    // Save admin session with full user data
+                    localStorage.setItem('user', JSON.stringify(meData));
+
+                    // Show success toast
+                    showAdminToast('Welcome back, Admin!');
+
+                    // Redirect to admin panel
+                    setTimeout(() => {
+                        window.location.href = '/admin.html';
+                    }, 500);
+                    return false;
+                } else {
+                    showAdminError('Access denied. Admin privileges required.');
+                    return false;
+                }
+            } else if (data.needs_verification) {
+                showAdminError('This account is not verified. Please verify your email first.');
+                return false;
+            } else {
+                showAdminError(data.error || 'Invalid email or password');
+                return false;
+            }
+        } catch (err) {
+            showAdminError('Connection error. Please try again.');
+            return false;
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px;"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg> Sign In to Admin Panel';
+            submitBtn.classList.remove('loading');
+        }
+    }
+
+    // Demo credentials are shown ONLY when the URL has ?demo=1 so live users
+    // never see them. Values are base64-encoded to stay out of plain sight in
+    // the page source; anyone who needs them was told the URL privately.
+    (function setupDemoCreds() {
+        if (new URLSearchParams(window.location.search).get('demo') !== '1') return;
+        const box = document.getElementById('demo-creds');
+        if (!box) return;
+        const password = atob('RGVtb0AxMjM0');
+        const creds = [
+            { icon: '👑 Admin', email: atob('YWRtaW5AZGVtby5jb20='), password: password },
+            { icon: '👤 User', email: atob('dXNlckBkZW1vLmNvbQ=='), password: password },
+        ];
+        const title = document.createElement('div');
+        title.className = 'demo-creds-title';
+        title.textContent = 'Demo credentials (click to fill)';
+        box.appendChild(title);
+        for (const c of creds) {
+            const row = document.createElement('button');
+            row.type = 'button';
+            row.className = 'demo-cred-row';
+            const role = document.createElement('span');
+            role.className = 'demo-cred-role';
+            role.textContent = c.icon;
+            const detail = document.createElement('span');
+            detail.className = 'demo-cred-detail';
+            detail.textContent = c.email + ' / ' + c.password;
+            row.appendChild(role);
+            row.appendChild(detail);
+            row.addEventListener('click', () => {
+                document.getElementById('admin-email').value = c.email;
+                document.getElementById('admin-password').value = c.password;
+            });
+            box.appendChild(row);
+        }
+        box.hidden = false;
+    })();
+
+    function showAdminError(msg) {
+        const errorEl = document.getElementById('admin-login-error');
+        errorEl.textContent = msg;
+        errorEl.style.display = 'block';
+    }
+
+    function showAdminToast(msg) {
+        // Simple toast for admin login
+        const toast = document.createElement('div');
+        toast.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 14px 20px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border-radius: 10px;
+            font-weight: 500;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+            max-width: 300px;
+        `;
+        toast.textContent = msg;
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transition = 'opacity 0.3s ease';
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }        // Auto-redirect if already logged in as admin
+    (function checkExistingAdminSession() {
+        fetch('/api/auth/me', { credentials: 'include' })
+            .then(res => res.json())
+            .then(data => {
+                if (data && data.role && (data.role === 'admin' || data.role === 'administrator')) {
+                    window.location.href = '/admin.html';
+                }
+            })
+            .catch(() => {
+                // Not logged in, show login page
+            });
+    })();
+    </script>
+</body>
+</html>
